@@ -64,7 +64,7 @@
                                                 </a>
                                             </li>
                                             {% endif %}
-                                            
+
                                             {% for page in pagination.pages %}
                                                 {% if page %}
                                                     {% if page != pagination.page %}
@@ -96,15 +96,14 @@
                                 <div class="blog-sidebar-widget-content">
                                     <div class="blog-sidebar-about">
                                         <div class="featured-author text-center">
-                                            <a href="team-details.html"><img src="assets/images/blog/comment/01.jpg" alt=""></a>
-                                            <h6 class="featured-author-title mt-30"><a href="team-details.html">Rose Sophia Marlina</a></h6>
-                                            <small class="designation">Digital Marketer</small>
-                                            <p>Lorem ipsum dolor sit amet, consect etur adipisicing elit eiusmod.</p>
+                                            <!-- <a href="team-details.html"><img src="assets/images/blog/comment/01.jpg" alt=""></a> -->
+                                            <!-- <h6 class="featured-author-title mt-30"><a href="team-details.html">Rose Sophia Marlina</a></h6> -->
+                                            <small class="designation">Śledź Nas</small>
+                                            <p>Śledź nas w social mediach, aby być na bieżąco z najnowszymi informacjami, poradami i inspiracjami prosto z branży!</p>
                                             <div class="featured-author-social mt-25">
-                                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                                <a href="#"><i class="fa fa-vimeo-v"></i></a>
-                                                <a href="#"><i class="fab fa-linkedin"></i></a>
+                                                <a href="https://www.facebook.com/dmddomy/" target="_blank"><i class="fa fa-facebook"></i></a>
+                                                <a href="https://www.youtube.com/channel/UCBRN-SPMEIYK6YRV23Komxw" target="_blank"><i class="fa fa-youtube"></i></a>
+                                                <a href="https://www.instagram.com/dmddomy/" target="_blank"><i class="fab fa-instagram"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -113,11 +112,11 @@
                             <div class="blog-sidebar-widget mb-55">
                                 <div class="blog-sidebar-widget-content">
                                     <div class="blog-sidebar-widget-head mb-30">
-                                        <h3 class="blog-sidebar-widget-title">Search Here</h3>
+                                        <h3 class="blog-sidebar-widget-title">Przeszukaj Blog</h3>
                                     </div>
                                     <div class="blog-sidebar-search p-relative">
-                                        <form action="#">
-                                            <input type="text" placeholder="Search news">
+                                        <form method="POST" action="{{ url_for('searchBlog') }}" enctype="multipart/form-data">
+                                            <input type="text" name="query" placeholder="Szukaj w blogach..." required>
                                             <button type="submit">
                                                 <i class="fa-solid fa-magnifying-glass"></i>
                                             </button>
@@ -127,75 +126,49 @@
                             </div>
                             <div class="blog-sidebar-widget mb-55">
                                 <div class="blog-sidebar-widget-head mb-30">
-                                    <h3 class="blog-sidebar-widget-title">Recent posts</h3>
+                                    <h3 class="blog-sidebar-widget-title">Polecane</h3>
                                 </div>
                                 <div class="blog-sidebar-widget-content">
                                     <div class="rc-post-wrapper">
-                                        <div class="rc-post d-flex align-items-start mt-20">
-                                            <div class="rc-thumb pr-20">
-                                                <a href="blog-single.html"><img src="assets/images/blog/recent-post/01.jpg" alt=""></a>
-                                            </div>
-                                            <div class="rc-content">
-                                                <h6 class="rc-title"><a href="blog-single.html">Intrinsic Motivation.</a></h6>
-                                                <div class="rc-meta">
-                                                    <span><i class="fa-solid fa-calendar-days"></i> October 30, 2021</span>
+                                        {% for rPost in recentPosts %}
+                                            <div class="rc-post d-flex align-items-start mt-20">
+                                                <div class="rc-thumb pr-20">
+                                                    <a href="/blog-one?post={{rPost['id']}}"><img src="{{rPost['contentFoto']}}" alt=""></a>
+                                                </div>
+                                                <div class="rc-content">
+                                                    <h6 class="rc-title"><a href="/blog-one?post={{rPost['id']}}">{{rPost['title']}}</a></h6>
+                                                    <div class="rc-meta">
+                                                        <span><i class="fa-solid fa-calendar-days"></i> {{rPost['data']}}</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="rc-post d-flex align-items-start mt-20">
-                                            <div class="rc-thumb pr-20">
-                                                <a href="blog-single.html"><img src="assets/images/blog/recent-post/02.jpg" alt=""></a>
-                                            </div>
-                                            <div class="rc-content">
-                                                <h6 class="rc-title"><a href="blog-single.html">Grading Student.</a></h6>
-                                                <div class="rc-meta">
-                                                    <span><i class="fa-solid fa-calendar-days"></i> October 25, 2021</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="rc-post d-flex align-items-start mt-20">
-                                            <div class="rc-thumb pr-20">
-                                                <a href="blog-single.html"><img src="assets/images/blog/recent-post/03.jpg" alt=""></a>
-                                            </div>
-                                            <div class="rc-content">
-                                                <h6 class="rc-title"><a href="blog-single.html">Evolution of Visual</a></h6>
-                                                <div class="rc-meta">
-                                                    <span><i class="fa-solid fa-calendar-days"></i> October 24, 2021</span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        {% endfor %} 
                                     </div>
                                 </div>
                             </div>
                             <div class="blog-sidebar-widget mb-55">
                                 <div class="blog-sidebar-widget-head mb-30">
-                                    <h3 class="blog-sidebar-widget-title">Category</h3>
+                                    <h3 class="blog-sidebar-widget-title">Kategorie</h3>
                                 </div>
                                 <div class="blog-sidebar-widget-content">
                                     <ul>
-                                        <li><a href="blog.html"><i class="fa-solid fa-angle-right"></i> Construction</a></li>
-                                        <li><a href="blog.html"><i class="fa-solid fa-angle-right"></i> Industrial (4)</a></li>
-                                        <li><a href="blog.html"><i class="fa-solid fa-angle-right"></i> Automation  (8)</a></li>
-                                        <li><a href="blog.html"><i class="fa-solid fa-angle-right"></i> Business  (5)</a></li>
-                                        <li><a href="blog.html"><i class="fa-solid fa-angle-right"></i> UX Design  (3)</a></li>
-                                        <li><a href="blog.html"><i class="fa-solid fa-angle-right"></i> WordPress  (3)</a></li>
+                                        {% for cat, count in cat_dict.items() %}
+                                            {% if count > 1 %}
+                                                <li><a href="/find-by-category?category={{cat}}"><i class="fa-solid fa-angle-right"></i> {{cat}} <span>({{count}})</span></a></li>
+                                            {% endif %}
+                                        {% endfor %}
                                     </ul>
                                 </div>
                             </div>
                             <div class="blog-sidebar-widget mb-55">
                                 <div class="blog-sidebar-widget-head mb-30">
-                                    <h3 class="blog-sidebar-widget-title">Tags</h3>
+                                    <h3 class="blog-sidebar-widget-title">Tagi</h3>
                                 </div>
                                 <div class="blog-sidebar-widget-content">
                                     <div class="tagcloud">
-                                        <a href="#">Art</a>
-                                        <a href="#">Course</a>
-                                        <a href="#">Videos</a>
-                                        <a href="#">App</a>
-                                        <a href="#">Education</a>
-                                        <a href="#">Data</a>
-                                        <a href="#">Machine </a>
-                                        <a href="#">Tips</a>
+                                        {% for tag in tag_list[:10] %}
+                                            <a href="/find-by-tags?tag={{tag}}">{{tag}}</a>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
