@@ -50,118 +50,41 @@
                                     </div>
                                 </div>
                             {% endfor %}
-                            <!-- <div class="col-lg-6 col-sm-6">
-                                <div class="blog-block mt-30">
-                                    <div class="blog-thumb">
-                                        <img src="assets/images/blog/02.jpg" alt="">
-                                    </div>
-                                    <div class="blog-block-content mt-40">
-                                        <span>News & Blog</span>
-                                        <h4 class="title">
-                                            <a href="blog-single.html">What Are The Benefits Of LEED Certification?</a>
-                                        </h4>
-                                        <p class="text">Objectively integrate emerging ratione temporibus magnam praesentium.</p>
-                                        <div class="blog-btn mt-25">
-                                            <a href="#">Read More</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-6">
-                                <div class="blog-block mt-30">
-                                    <div class="blog-thumb">
-                                        <img src="assets/images/blog/03.jpg" alt="">
-                                    </div>
-                                    <div class="blog-block-content mt-40">
-                                        <span>News & Blog</span>
-                                        <h4 class="title">
-                                            <a href="blog-single.html">Tips : Is Builders Needs Liability Insurance</a>
-                                        </h4>
-                                        <p class="text">Objectively integrate emerging ratione temporibus magnam praesentium.</p>
-                                        <div class="blog-btn mt-25">
-                                            <a href="#">Read More</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-6">
-                                <div class="blog-block mt-30">
-                                    <div class="blog-thumb">
-                                        <img src="assets/images/blog/04.jpg" alt="">
-                                    </div>
-                                    <div class="blog-block-content mt-40">
-                                        <span>News & Blog</span>
-                                        <h4 class="title">
-                                            <a href="blog-single.html">Improve Workflow With Agile Construction</a>
-                                        </h4>
-                                        <p class="text">Objectively integrate emerging ratione temporibus magnam praesentium.</p>
-                                        <div class="blog-btn mt-25">
-                                            <a href="#">Read More</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-6">
-                                <div class="blog-block mt-30">
-                                    <div class="blog-thumb">
-                                        <img src="assets/images/blog/05.jpg" alt="">
-                                    </div>
-                                    <div class="blog-block-content mt-40">
-                                        <span>News & Blog</span>
-                                        <h4 class="title">
-                                            <a href="blog-single.html">What Are The Benefits Of LEED Certification?</a>
-                                        </h4>
-                                        <p class="text">Objectively integrate emerging ratione temporibus magnam praesentium.</p>
-                                        <div class="blog-btn mt-25">
-                                            <a href="#">Read More</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-6">
-                                <div class="blog-block mt-30">
-                                    <div class="blog-thumb">
-                                        <img src="assets/images/blog/06.jpg" alt="">
-                                    </div>
-                                    <div class="blog-block-content mt-40">
-                                        <span>News & Blog</span>
-                                        <h4 class="title">
-                                            <a href="blog-single.html">Tips : Is Builders Needs Liability Insurance</a>
-                                        </h4>
-                                        <p class="text">Objectively integrate emerging ratione temporibus magnam praesentium.</p>
-                                        <div class="blog-btn mt-25">
-                                            <a href="#">Read More</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="blog-pagination mt-50">
+                                    {% if pagination.total_pages > 1 %}
                                     <nav>
                                         <ul>
+                                            {% if pagination.has_prev %}
                                             <li>
-                                                <a href="blog.html">
+                                                <a href="{{ url_for(request.endpoint, page=pagination.page - 1) }}">
                                                     <i class="fa fa-angle-double-left"></i>
                                                 </a>
                                             </li>
+                                            {% endif %}
+                                            
+                                            {% for page in pagination.pages %}
+                                                {% if page %}
+                                                    {% if page != pagination.page %}
+                                                    <li><a href="{{ url_for(request.endpoint, page=page) }}">{{ page }}</a></li>
+                                                    {% else %}
+                                                    <li><span class="current">{{ page }}</span></li>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            
+                                            {% if pagination.has_next %}
                                             <li>
-                                                <a href="blog.html">1</a>
-                                            </li>
-                                            <li>
-                                                <span class="current">2</span>
-                                            </li>
-                                            <li>
-                                                <a href="blog.html">3</a>
-                                            </li>
-                                            <li>
-                                                <a href="blog.html">
+                                                <a href="{{ url_for(request.endpoint, page=pagination.page + 1) }}">
                                                     <i class="fa fa-angle-double-right"></i>
                                                 </a>
                                             </li>
+                                            {% endif %}
                                         </ul>
                                     </nav>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
