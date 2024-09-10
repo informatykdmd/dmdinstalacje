@@ -3,7 +3,7 @@ from flask_paginate import Pagination, get_page_args
 import mysqlDB as msq
 import secrets
 from datetime import datetime
-# from googletrans import Translator
+from googletrans import Translator
 import random
 import re
 
@@ -15,11 +15,11 @@ app.config['SECRET_KEY'] = secrets.token_hex(16)
 app.config['SESSION_TYPE'] = 'filesystem'  # Możesz wybrać inny backend, np. 'redis', 'sqlalchemy', itp.
 Session(app)
 
-# def getLangText(text):
-#     """Funkcja do tłumaczenia tekstu z polskiego na angielski"""
-#     translator = Translator()
-#     translation = translator.translate(str(text), dest='en')
-#     return translation.text
+def getLangText(text):
+    """Funkcja do tłumaczenia tekstu z polskiego na angielski"""
+    translator = Translator()
+    translation = translator.translate(str(text), dest='en')
+    return translation.text
 
 def format_date(date_input, pl=True):
     ang_pol = {
@@ -75,48 +75,48 @@ def generator_subsDataDB():
         subsData.append(theme)
     return subsData
 
-# def generator_daneDBList(lang='pl'):
-#     daneList = []
-#     took_allPost = msq.connect_to_database(f'SELECT * FROM blog_posts ORDER BY ID DESC;') # take_data_table('*', 'blog_posts')
-#     for post in took_allPost:
-#         id = post[0]
-#         id_content = post[1]
-#         id_author = post[2]
+def generator_daneDBList(lang='pl'):
+    daneList = []
+    took_allPost = msq.connect_to_database(f'SELECT * FROM blog_posts ORDER BY ID DESC;') # take_data_table('*', 'blog_posts')
+    for post in took_allPost:
+        id = post[0]
+        id_content = post[1]
+        id_author = post[2]
 
-#         allPostComments = take_data_where_ID('*', 'comments', 'BLOG_POST_ID', id)
-#         comments_dict = {}
-#         for i, com in enumerate(allPostComments):
-#             comments_dict[i] = {}
-#             comments_dict[i]['id'] = com[0]
-#             comments_dict[i]['message'] = com[2] if lang=='pl' else getLangText(com[2])
-#             comments_dict[i]['user'] = take_data_where_ID('CLIENT_NAME', 'newsletter', 'ID', com[3])[0][0]
-#             comments_dict[i]['e-mail'] = take_data_where_ID('CLIENT_EMAIL', 'newsletter', 'ID', com[3])[0][0]
-#             comments_dict[i]['avatar'] = take_data_where_ID('AVATAR_USER', 'newsletter', 'ID', com[3])[0][0]
-#             comments_dict[i]['data-time'] = format_date(com[4]) if lang=='pl' else format_date(com[4], False)
+        allPostComments = take_data_where_ID('*', 'comments', 'BLOG_POST_ID', id)
+        comments_dict = {}
+        for i, com in enumerate(allPostComments):
+            comments_dict[i] = {}
+            comments_dict[i]['id'] = com[0]
+            comments_dict[i]['message'] = com[2] if lang=='pl' else getLangText(com[2])
+            comments_dict[i]['user'] = take_data_where_ID('CLIENT_NAME', 'newsletter', 'ID', com[3])[0][0]
+            comments_dict[i]['e-mail'] = take_data_where_ID('CLIENT_EMAIL', 'newsletter', 'ID', com[3])[0][0]
+            comments_dict[i]['avatar'] = take_data_where_ID('AVATAR_USER', 'newsletter', 'ID', com[3])[0][0]
+            comments_dict[i]['data-time'] = format_date(com[4]) if lang=='pl' else format_date(com[4], False)
             
-#         theme = {
-#             'id': take_data_where_ID('ID', 'contents', 'ID', id_content)[0][0],
-#             'title': take_data_where_ID('TITLE', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('TITLE', 'contents', 'ID', id_content)[0][0]),
-#             'introduction': take_data_where_ID('CONTENT_MAIN', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('CONTENT_MAIN', 'contents', 'ID', id_content)[0][0]),
-#             'highlight': take_data_where_ID('HIGHLIGHTS', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('HIGHLIGHTS', 'contents', 'ID', id_content)[0][0]),
-#             'mainFoto': take_data_where_ID('HEADER_FOTO', 'contents', 'ID', id_content)[0][0],
-#             'contentFoto': take_data_where_ID('CONTENT_FOTO', 'contents', 'ID', id_content)[0][0],
-#             'additionalList': str(take_data_where_ID('BULLETS', 'contents', 'ID', id_content)[0][0]).split('#splx#') if lang=='pl' else str(getLangText(take_data_where_ID('BULLETS', 'contents', 'ID', id_content)[0][0])).replace('#SPLX#', '#splx#').split('#splx#'),
-#             'tags': str(take_data_where_ID('TAGS', 'contents', 'ID', id_content)[0][0]).split(', ') if lang=='pl' else str(getLangText(take_data_where_ID('TAGS', 'contents', 'ID', id_content)[0][0])).split(', '),
-#             'category': take_data_where_ID('CATEGORY', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('CATEGORY', 'contents', 'ID', id_content)[0][0]),
-#             'data': format_date(take_data_where_ID('DATE_TIME', 'contents', 'ID', id_content)[0][0]) if lang=='pl' else format_date(take_data_where_ID('DATE_TIME', 'contents', 'ID', id_content)[0][0], False),
-#             'author': take_data_where_ID('NAME_AUTHOR', 'authors', 'ID', id_author)[0][0],
+        theme = {
+            'id': take_data_where_ID('ID', 'contents', 'ID', id_content)[0][0],
+            'title': take_data_where_ID('TITLE', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('TITLE', 'contents', 'ID', id_content)[0][0]),
+            'introduction': take_data_where_ID('CONTENT_MAIN', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('CONTENT_MAIN', 'contents', 'ID', id_content)[0][0]),
+            'highlight': take_data_where_ID('HIGHLIGHTS', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('HIGHLIGHTS', 'contents', 'ID', id_content)[0][0]),
+            'mainFoto': take_data_where_ID('HEADER_FOTO', 'contents', 'ID', id_content)[0][0],
+            'contentFoto': take_data_where_ID('CONTENT_FOTO', 'contents', 'ID', id_content)[0][0],
+            'additionalList': str(take_data_where_ID('BULLETS', 'contents', 'ID', id_content)[0][0]).split('#splx#') if lang=='pl' else str(getLangText(take_data_where_ID('BULLETS', 'contents', 'ID', id_content)[0][0])).replace('#SPLX#', '#splx#').split('#splx#'),
+            'tags': str(take_data_where_ID('TAGS', 'contents', 'ID', id_content)[0][0]).split(', ') if lang=='pl' else str(getLangText(take_data_where_ID('TAGS', 'contents', 'ID', id_content)[0][0])).split(', '),
+            'category': take_data_where_ID('CATEGORY', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('CATEGORY', 'contents', 'ID', id_content)[0][0]),
+            'data': format_date(take_data_where_ID('DATE_TIME', 'contents', 'ID', id_content)[0][0]) if lang=='pl' else format_date(take_data_where_ID('DATE_TIME', 'contents', 'ID', id_content)[0][0], False),
+            'author': take_data_where_ID('NAME_AUTHOR', 'authors', 'ID', id_author)[0][0],
 
-#             'author_about': take_data_where_ID('ABOUT_AUTHOR', 'authors', 'ID', id_author)[0][0] if lang=='pl' else getLangText(take_data_where_ID('ABOUT_AUTHOR', 'authors', 'ID', id_author)[0][0]),
-#             'author_avatar': take_data_where_ID('AVATAR_AUTHOR', 'authors', 'ID', id_author)[0][0],
-#             'author_facebook': take_data_where_ID('FACEBOOK', 'authors', 'ID', id_author)[0][0],
-#             'author_twitter': take_data_where_ID('TWITER_X', 'authors', 'ID', id_author)[0][0],
-#             'author_instagram': take_data_where_ID('INSTAGRAM', 'authors', 'ID', id_author)[0][0],
+            'author_about': take_data_where_ID('ABOUT_AUTHOR', 'authors', 'ID', id_author)[0][0] if lang=='pl' else getLangText(take_data_where_ID('ABOUT_AUTHOR', 'authors', 'ID', id_author)[0][0]),
+            'author_avatar': take_data_where_ID('AVATAR_AUTHOR', 'authors', 'ID', id_author)[0][0],
+            'author_facebook': take_data_where_ID('FACEBOOK', 'authors', 'ID', id_author)[0][0],
+            'author_twitter': take_data_where_ID('TWITER_X', 'authors', 'ID', id_author)[0][0],
+            'author_instagram': take_data_where_ID('INSTAGRAM', 'authors', 'ID', id_author)[0][0],
 
-#             'comments': comments_dict
-#         }
-#         daneList.append(theme)
-#     return daneList
+            'comments': comments_dict
+        }
+        daneList.append(theme)
+    return daneList
 
 # def generator_daneDBList_short(lang='pl'):
 #     daneList = []
@@ -175,63 +175,63 @@ def generator_daneDBList_RecentPosts(main_id, amount = 3):
 
     return posts
 
-# def generator_daneDBList_one_post_id(id_post, lang='pl'):
-#     daneList = []
-#     took_allPost = msq.connect_to_database(f'SELECT * FROM blog_posts WHERE ID={id_post};') # take_data_table('*', 'blog_posts')
-#     for post in took_allPost:
-#         id = post[0]
-#         id_content = post[1]
-#         id_author = post[2]
+def generator_daneDBList_one_post_id(id_post, lang='pl'):
+    daneList = []
+    took_allPost = msq.connect_to_database(f'SELECT * FROM blog_posts WHERE ID={id_post};') # take_data_table('*', 'blog_posts')
+    for post in took_allPost:
+        id = post[0]
+        id_content = post[1]
+        id_author = post[2]
 
-#         allPostComments = take_data_where_ID('*', 'comments', 'BLOG_POST_ID', id)
-#         comments_dict = {}
-#         for i, com in enumerate(allPostComments):
-#             comments_dict[i] = {}
-#             comments_dict[i]['id'] = com[0]
-#             comments_dict[i]['message'] = com[2] if lang=='pl' else getLangText(com[2])
-#             comments_dict[i]['user'] = take_data_where_ID('CLIENT_NAME', 'newsletter', 'ID', com[3])[0][0]
-#             comments_dict[i]['e-mail'] = take_data_where_ID('CLIENT_EMAIL', 'newsletter', 'ID', com[3])[0][0]
-#             comments_dict[i]['avatar'] = take_data_where_ID('AVATAR_USER', 'newsletter', 'ID', com[3])[0][0]
-#             comments_dict[i]['data-time'] = format_date(com[4]) if lang=='pl' else format_date(com[4], False)
+        allPostComments = take_data_where_ID('*', 'comments', 'BLOG_POST_ID', id)
+        comments_dict = {}
+        for i, com in enumerate(allPostComments):
+            comments_dict[i] = {}
+            comments_dict[i]['id'] = com[0]
+            comments_dict[i]['message'] = com[2] if lang=='pl' else getLangText(com[2])
+            comments_dict[i]['user'] = take_data_where_ID('CLIENT_NAME', 'newsletter', 'ID', com[3])[0][0]
+            comments_dict[i]['e-mail'] = take_data_where_ID('CLIENT_EMAIL', 'newsletter', 'ID', com[3])[0][0]
+            comments_dict[i]['avatar'] = take_data_where_ID('AVATAR_USER', 'newsletter', 'ID', com[3])[0][0]
+            comments_dict[i]['data-time'] = format_date(com[4]) if lang=='pl' else format_date(com[4], False)
 
-#             allCommentsByUser = take_data_where_ID('*', 'comments', 'AUTHOR_OF_COMMENT_ID', com[3])
+            allCommentsByUser = take_data_where_ID('*', 'comments', 'AUTHOR_OF_COMMENT_ID', com[3])
 
-#             usr_stars_counter = 1
-#             if comments_dict[i]['avatar']:
-#                 usr_stars_counter += 1
+            usr_stars_counter = 1
+            if comments_dict[i]['avatar']:
+                usr_stars_counter += 1
 
-#             if len(allCommentsByUser) > 10:
-#                 usr_stars_counter += 4
-#             elif len(allCommentsByUser) > 4:
-#                 usr_stars_counter += 2
-#             elif len(allCommentsByUser) > 1:
-#                 usr_stars_counter += 1
+            if len(allCommentsByUser) > 10:
+                usr_stars_counter += 4
+            elif len(allCommentsByUser) > 4:
+                usr_stars_counter += 2
+            elif len(allCommentsByUser) > 1:
+                usr_stars_counter += 1
 
-#             comments_dict[i]['user_stars'] = usr_stars_counter
+            comments_dict[i]['user_stars'] = usr_stars_counter
             
-#         theme = {
-#             'id': take_data_where_ID('ID', 'contents', 'ID', id_content)[0][0],
-#             'title': take_data_where_ID('TITLE', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('TITLE', 'contents', 'ID', id_content)[0][0]),
-#             'introduction': take_data_where_ID('CONTENT_MAIN', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('CONTENT_MAIN', 'contents', 'ID', id_content)[0][0]),
-#             'highlight': take_data_where_ID('HIGHLIGHTS', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('HIGHLIGHTS', 'contents', 'ID', id_content)[0][0]),
-#             'mainFoto': take_data_where_ID('HEADER_FOTO', 'contents', 'ID', id_content)[0][0],
-#             'contentFoto': take_data_where_ID('CONTENT_FOTO', 'contents', 'ID', id_content)[0][0],
-#             'additionalList': str(take_data_where_ID('BULLETS', 'contents', 'ID', id_content)[0][0]).split('#splx#') if lang=='pl' else str(getLangText(take_data_where_ID('BULLETS', 'contents', 'ID', id_content)[0][0])).replace('#SPLX#', '#splx#').split('#splx#'),
-#             'tags': str(take_data_where_ID('TAGS', 'contents', 'ID', id_content)[0][0]).split(', ') if lang=='pl' else str(getLangText(take_data_where_ID('TAGS', 'contents', 'ID', id_content)[0][0])).split(', '),
-#             'category': take_data_where_ID('CATEGORY', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('CATEGORY', 'contents', 'ID', id_content)[0][0]),
-#             'data': format_date(take_data_where_ID('DATE_TIME', 'contents', 'ID', id_content)[0][0]) if lang=='pl' else format_date(take_data_where_ID('DATE_TIME', 'contents', 'ID', id_content)[0][0], False),
-#             'author': take_data_where_ID('NAME_AUTHOR', 'authors', 'ID', id_author)[0][0],
+        theme = {
+            'id': take_data_where_ID('ID', 'contents', 'ID', id_content)[0][0],
+            'title': take_data_where_ID('TITLE', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('TITLE', 'contents', 'ID', id_content)[0][0]),
+            'introduction': take_data_where_ID('CONTENT_MAIN', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('CONTENT_MAIN', 'contents', 'ID', id_content)[0][0]),
+            'highlight': take_data_where_ID('HIGHLIGHTS', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('HIGHLIGHTS', 'contents', 'ID', id_content)[0][0]),
+            'mainFoto': take_data_where_ID('HEADER_FOTO', 'contents', 'ID', id_content)[0][0],
+            'contentFoto': take_data_where_ID('CONTENT_FOTO', 'contents', 'ID', id_content)[0][0],
+            'additionalList': str(take_data_where_ID('BULLETS', 'contents', 'ID', id_content)[0][0]).split('#splx#') if lang=='pl' else str(getLangText(take_data_where_ID('BULLETS', 'contents', 'ID', id_content)[0][0])).replace('#SPLX#', '#splx#').split('#splx#'),
+            'tags': str(take_data_where_ID('TAGS', 'contents', 'ID', id_content)[0][0]).split(', ') if lang=='pl' else str(getLangText(take_data_where_ID('TAGS', 'contents', 'ID', id_content)[0][0])).split(', '),
+            'category': take_data_where_ID('CATEGORY', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('CATEGORY', 'contents', 'ID', id_content)[0][0]),
+            'data': format_date(take_data_where_ID('DATE_TIME', 'contents', 'ID', id_content)[0][0]) if lang=='pl' else format_date(take_data_where_ID('DATE_TIME', 'contents', 'ID', id_content)[0][0], False),
+            'author': take_data_where_ID('NAME_AUTHOR', 'authors', 'ID', id_author)[0][0],
 
-#             'author_about': take_data_where_ID('ABOUT_AUTHOR', 'authors', 'ID', id_author)[0][0] if lang=='pl' else getLangText(take_data_where_ID('ABOUT_AUTHOR', 'authors', 'ID', id_author)[0][0]),
-#             'author_avatar': take_data_where_ID('AVATAR_AUTHOR', 'authors', 'ID', id_author)[0][0],
-#             'author_facebook': take_data_where_ID('FACEBOOK', 'authors', 'ID', id_author)[0][0],
-#             'author_twitter': take_data_where_ID('TWITER_X', 'authors', 'ID', id_author)[0][0],
-#             'author_instagram': take_data_where_ID('INSTAGRAM', 'authors', 'ID', id_author)[0][0],
+            'author_about': take_data_where_ID('ABOUT_AUTHOR', 'authors', 'ID', id_author)[0][0] if lang=='pl' else getLangText(take_data_where_ID('ABOUT_AUTHOR', 'authors', 'ID', id_author)[0][0]),
+            'author_avatar': take_data_where_ID('AVATAR_AUTHOR', 'authors', 'ID', id_author)[0][0],
+            'author_facebook': take_data_where_ID('FACEBOOK', 'authors', 'ID', id_author)[0][0],
+            'author_twitter': take_data_where_ID('TWITER_X', 'authors', 'ID', id_author)[0][0],
+            'author_instagram': take_data_where_ID('INSTAGRAM', 'authors', 'ID', id_author)[0][0],
 
-#             'comments': comments_dict
-#         }
-#         daneList.append(theme)
-#     return daneList
+            'comments': comments_dict
+        }
+        daneList.append(theme)
+    return daneList
 
 def is_valid_phone(phone):
     # Wzorzec dla numeru telefonu: zaczyna się opcjonalnym plusem, po którym następuje 9-15 cyfr
@@ -362,53 +362,53 @@ def blogs():
     session['page'] = 'blogs'
     pageTitle = 'Blog'
 
-    # if not 'blog_post' in session:
-    #     blog_post = generator_daneDBList()
-    #     session['blog_post'] = blog_post
-    # else:
-    #     blog_post = session['blog_post']
+    if not 'blog_post' in session:
+        blog_post = generator_daneDBList()
+        session['blog_post'] = blog_post
+    else:
+        blog_post = session['blog_post']
 
-    # # Ustawienia paginacji
-    # page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
-    # total = len(blog_post)
-    # pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
+    # Ustawienia paginacji
+    page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
+    total = len(blog_post)
+    pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
 
-    # # Pobierz tylko odpowiednią ilość postów na aktualnej stronie
-    # posts = blog_post[offset: offset + per_page]
+    # Pobierz tylko odpowiednią ilość postów na aktualnej stronie
+    posts = blog_post[offset: offset + per_page]
 
-    # cats = generator_daneDBList_cetegory()
-    # cat_dict = cats[1]
-    # take_id_rec_pos = generator_daneDBList_RecentPosts(0)
-    # recentPosts = []
-    # for idp in take_id_rec_pos:
-    #     t_post = generator_daneDBList_one_post_id(idp)[0]
-    #     theme = {
-    #         'id': t_post['id'],
-    #         'title': t_post['title'],
-    #         'mainFoto': t_post['mainFoto'],
-    #         'contentFoto': t_post['contentFoto'],
-    #         'category': t_post['category'],
-    #         'author': t_post['author'],
-    #         'data': t_post['data']
-    #     }
-    #     recentPosts.append(theme)
+    cats = generator_daneDBList_cetegory()
+    cat_dict = cats[1]
+    take_id_rec_pos = generator_daneDBList_RecentPosts(0)
+    recentPosts = []
+    for idp in take_id_rec_pos:
+        t_post = generator_daneDBList_one_post_id(idp)[0]
+        theme = {
+            'id': t_post['id'],
+            'title': t_post['title'],
+            'mainFoto': t_post['mainFoto'],
+            'contentFoto': t_post['contentFoto'],
+            'category': t_post['category'],
+            'author': t_post['author'],
+            'data': t_post['data']
+        }
+        recentPosts.append(theme)
     
-    # # print(posts)
-    # tag_set = set()
-    # for post_dict in posts:
-    #     if 'tags' in post_dict:
-    #         for tag in post_dict['tags']:
-    #             tag_set.add(tag)
-    # tag_list = [str(t).replace('#', '') for t in tag_set]
+    # print(posts)
+    tag_set = set()
+    for post_dict in posts:
+        if 'tags' in post_dict:
+            for tag in post_dict['tags']:
+                tag_set.add(tag)
+    tag_list = [str(t).replace('#', '') for t in tag_set]
 
     return render_template(
         f'blog.html',
         pageTitle=pageTitle,
-        # cat_dict=cat_dict,
-        # recentPosts=recentPosts,
-        # pagination=pagination,
-        # posts=posts,
-        # tag_list=tag_list
+        cat_dict=cat_dict,
+        recentPosts=recentPosts,
+        pagination=pagination,
+        posts=posts,
+        tag_list=tag_list
         )
 
 @app.route('/blog-one', methods=['GET'])
