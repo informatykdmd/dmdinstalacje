@@ -10,7 +10,7 @@ import re
 from flask_session import Session
 
 app = Flask(__name__)
-app.config['PER_PAGE'] = 4
+app.config['PER_PAGE'] = 8
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 app.config['SESSION_TYPE'] = 'filesystem'  # Możesz wybrać inny backend, np. 'redis', 'sqlalchemy', itp.
 Session(app)
