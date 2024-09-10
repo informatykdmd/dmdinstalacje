@@ -459,181 +459,181 @@ def page_not_found(e):
     return redirect(url_for(f'index'))
 
 
-# @app.route('/find-by-category', methods=['GET'])
-# def findByCategory():
+@app.route('/find-by-category', methods=['GET'])
+def findByCategory():
 
-#     query = request.args.get('category')
-#     if not query:
-#         if not 'last_search' in session:
-#             print('Błąd requesta')
-#             return redirect(url_for('index'))
-#         else:
-#             query = session['last_search']
-#     else:
-#         session['last_search'] = query
+    query = request.args.get('category')
+    if not query:
+        if not 'last_search' in session:
+            print('Błąd requesta')
+            return redirect(url_for('index'))
+        else:
+            query = session['last_search']
+    else:
+        session['last_search'] = query
         
-#     sqlQuery = """
-#                 SELECT ID FROM contents 
-#                 WHERE CATEGORY LIKE %s 
-#                 ORDER BY ID DESC;
-#                 """
-#     params = (f'%{query}%', )
-#     results = msq.safe_connect_to_database(sqlQuery, params)
-#     pageTitle = f'Wyniki wyszukiwania dla categorii {query}'
+    sqlQuery = """
+                SELECT ID FROM contents 
+                WHERE CATEGORY LIKE %s 
+                ORDER BY ID DESC;
+                """
+    params = (f'%{query}%', )
+    results = msq.safe_connect_to_database(sqlQuery, params)
+    pageTitle = f'Wyniki wyszukiwania dla categorii {query}'
 
-#     searchResults = []
-#     for find_id in results:
-#         post_id = int(find_id[0])
-#         t_post = generator_daneDBList_one_post_id(post_id)[0]
-#         theme = {
-#             'id': t_post['id'],
-#             'title': t_post['title'],
-#             'mainFoto': t_post['mainFoto'],
-#             'introduction': smart_truncate(t_post['introduction'], 200),
-#             'category': t_post['category'],
-#             'author': t_post['author'],
-#             'data': t_post['data']
-#         }
-#         searchResults.append(theme)
+    searchResults = []
+    for find_id in results:
+        post_id = int(find_id[0])
+        t_post = generator_daneDBList_one_post_id(post_id)[0]
+        theme = {
+            'id': t_post['id'],
+            'title': t_post['title'],
+            'mainFoto': t_post['mainFoto'],
+            'introduction': smart_truncate(t_post['introduction'], 200),
+            'category': t_post['category'],
+            'author': t_post['author'],
+            'data': t_post['data']
+        }
+        searchResults.append(theme)
 
-#     found = len(searchResults)
+    found = len(searchResults)
 
-#     # Ustawienia paginacji
-#     page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
-#     total = len(searchResults)
-#     pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
+    # Ustawienia paginacji
+    page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
+    total = len(searchResults)
+    pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
 
-#     # Pobierz tylko odpowiednią ilość postów na aktualnej stronie
-#     posts = searchResults[offset: offset + per_page]
-
-
-#     return render_template(
-#         "searchBlog.html",
-#         pageTitle=pageTitle,
-#         posts=posts,
-#         found=found,
-#         pagination=pagination
-#         )
-
-# @app.route('/find-by-tags', methods=['GET'])
-# def findByTags():
-
-#     query = request.args.get('tag')
-
-#     if not query:
-#         if not 'last_search' in session:
-#             print('Błąd requesta')
-#             return redirect(url_for('index'))
-#         else:
-#             query = session['last_search']
-#     else:
-#         session['last_search'] = query
-
-#     sqlQuery = """
-#                 SELECT ID FROM contents 
-#                 WHERE TAGS LIKE %s 
-#                 ORDER BY ID DESC;
-#                 """
-#     params = (f'%#{query}%', )
-#     results = msq.safe_connect_to_database(sqlQuery, params)
-#     pageTitle = f'Wyniki wyszukiwania dla tagu {query}'
-
-#     searchResults = []
-#     for find_id in results:
-#         post_id = int(find_id[0])
-#         t_post = generator_daneDBList_one_post_id(post_id)[0]
-#         theme = {
-#             'id': t_post['id'],
-#             'title': t_post['title'],
-#             'mainFoto': t_post['mainFoto'],
-#             'introduction': smart_truncate(t_post['introduction'], 200),
-#             'category': t_post['category'],
-#             'author': t_post['author'],
-#             'data': t_post['data']
-#         }
-#         searchResults.append(theme)
-
-#     found = len(searchResults)
-
-#     # Ustawienia paginacji
-#     page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
-#     total = len(searchResults)
-#     pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
-
-#     # Pobierz tylko odpowiednią ilość postów na aktualnej stronie
-#     posts = searchResults[offset: offset + per_page]
+    # Pobierz tylko odpowiednią ilość postów na aktualnej stronie
+    posts = searchResults[offset: offset + per_page]
 
 
-#     return render_template(
-#         "searchBlog.html",
-#         pageTitle=pageTitle,
-#         posts=posts,
-#         found=found,
-#         pagination=pagination,
-#         query=query
-#         )
+    return render_template(
+        "searchBlog.html",
+        pageTitle=pageTitle,
+        posts=posts,
+        found=found,
+        pagination=pagination
+        )
+
+@app.route('/find-by-tags', methods=['GET'])
+def findByTags():
+
+    query = request.args.get('tag')
+
+    if not query:
+        if not 'last_search' in session:
+            print('Błąd requesta')
+            return redirect(url_for('index'))
+        else:
+            query = session['last_search']
+    else:
+        session['last_search'] = query
+
+    sqlQuery = """
+                SELECT ID FROM contents 
+                WHERE TAGS LIKE %s 
+                ORDER BY ID DESC;
+                """
+    params = (f'%#{query}%', )
+    results = msq.safe_connect_to_database(sqlQuery, params)
+    pageTitle = f'Wyniki wyszukiwania dla tagu {query}'
+
+    searchResults = []
+    for find_id in results:
+        post_id = int(find_id[0])
+        t_post = generator_daneDBList_one_post_id(post_id)[0]
+        theme = {
+            'id': t_post['id'],
+            'title': t_post['title'],
+            'mainFoto': t_post['mainFoto'],
+            'introduction': smart_truncate(t_post['introduction'], 200),
+            'category': t_post['category'],
+            'author': t_post['author'],
+            'data': t_post['data']
+        }
+        searchResults.append(theme)
+
+    found = len(searchResults)
+
+    # Ustawienia paginacji
+    page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
+    total = len(searchResults)
+    pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
+
+    # Pobierz tylko odpowiednią ilość postów na aktualnej stronie
+    posts = searchResults[offset: offset + per_page]
 
 
-# @app.route('/search-post-blog', methods=['GET', 'POST']) #, methods=['GET', 'POST']
-# def searchBlog():
-#     if request.method == "POST":
-#         query = request.form["query"]
-#         if query == '':
-#             print('Błąd requesta')
-#             return redirect(url_for('index'))
+    return render_template(
+        "searchBlog.html",
+        pageTitle=pageTitle,
+        posts=posts,
+        found=found,
+        pagination=pagination,
+        query=query
+        )
+
+
+@app.route('/search-post-blog', methods=['GET', 'POST']) #, methods=['GET', 'POST']
+def searchBlog():
+    if request.method == "POST":
+        query = request.form["query"]
+        if query == '':
+            print('Błąd requesta')
+            return redirect(url_for('index'))
         
-#         session['last_search'] = query
-#     elif 'last_search' in session:
-#         query = session['last_search']
-#     else:
-#         print('Błąd requesta')
-#         return redirect(url_for('index'))  # Uwaga: poprawiłem 'f' na 'index'
+        session['last_search'] = query
+    elif 'last_search' in session:
+        query = session['last_search']
+    else:
+        print('Błąd requesta')
+        return redirect(url_for('index'))  # Uwaga: poprawiłem 'f' na 'index'
 
-#     sqlQuery = """
-#                 SELECT ID FROM contents 
-#                 WHERE TITLE LIKE %s 
-#                 OR CONTENT_MAIN LIKE %s 
-#                 OR HIGHLIGHTS LIKE %s 
-#                 OR BULLETS LIKE %s 
-#                 ORDER BY ID DESC;
-#                 """
-#     params = (f'%{query}%', f'%{query}%', f'%{query}%', f'%{query}%')
-#     results = msq.safe_connect_to_database(sqlQuery, params)
-#     pageTitle = f'Wyniki wyszukiwania dla {query}'
+    sqlQuery = """
+                SELECT ID FROM contents 
+                WHERE TITLE LIKE %s 
+                OR CONTENT_MAIN LIKE %s 
+                OR HIGHLIGHTS LIKE %s 
+                OR BULLETS LIKE %s 
+                ORDER BY ID DESC;
+                """
+    params = (f'%{query}%', f'%{query}%', f'%{query}%', f'%{query}%')
+    results = msq.safe_connect_to_database(sqlQuery, params)
+    pageTitle = f'Wyniki wyszukiwania dla {query}'
 
-#     searchResults = []
-#     for find_id in results:
-#         post_id = int(find_id[0])
-#         t_post = generator_daneDBList_one_post_id(post_id)[0]
-#         theme = {
-#             'id': t_post['id'],
-#             'title': t_post['title'],
-#             'mainFoto': t_post['mainFoto'],
-#             'introduction': smart_truncate(t_post['introduction'], 200),
-#             'category': t_post['category'],
-#             'author': t_post['author'],
-#             'data': t_post['data']
-#         }
-#         searchResults.append(theme)
+    searchResults = []
+    for find_id in results:
+        post_id = int(find_id[0])
+        t_post = generator_daneDBList_one_post_id(post_id)[0]
+        theme = {
+            'id': t_post['id'],
+            'title': t_post['title'],
+            'mainFoto': t_post['mainFoto'],
+            'introduction': smart_truncate(t_post['introduction'], 200),
+            'category': t_post['category'],
+            'author': t_post['author'],
+            'data': t_post['data']
+        }
+        searchResults.append(theme)
 
-#     found = len(searchResults)
+    found = len(searchResults)
 
-#     # Ustawienia paginacji
-#     page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
-#     total = len(searchResults)
-#     pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
+    # Ustawienia paginacji
+    page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
+    total = len(searchResults)
+    pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
 
-#     # Pobierz tylko odpowiednią ilość postów na aktualnej stronie
-#     posts = searchResults[offset: offset + per_page]
+    # Pobierz tylko odpowiednią ilość postów na aktualnej stronie
+    posts = searchResults[offset: offset + per_page]
 
 
-#     return render_template(
-#         "searchBlog.html",
-#         pageTitle=pageTitle,
-#         posts=posts,
-#         found=found,
-#         pagination=pagination
-#         )
+    return render_template(
+        "searchBlog.html",
+        pageTitle=pageTitle,
+        posts=posts,
+        found=found,
+        pagination=pagination
+        )
 
 @app.route('/send-mess-pl', methods=['POST'])
 def sendMess():
