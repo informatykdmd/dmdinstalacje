@@ -387,6 +387,7 @@ def blogs():
             'title': t_post['title'],
             'mainFoto': t_post['mainFoto'],
             'contentFoto': t_post['contentFoto'],
+            'highlight': t_post['highlight'],
             'category': t_post['category'],
             'author': t_post['author'],
             'data': t_post['data']

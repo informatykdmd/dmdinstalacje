@@ -29,24 +29,26 @@
                     <!-- Blog content -->
                     <div class="col-lg-8">
                         <div class="row">
-                            <div class="col-lg-6 col-sm-6">
-                                <div class="blog-block mt-30">
-                                    <div class="blog-thumb">
-                                        <img src="assets/images/blog/01.jpg" alt="">
-                                    </div>
-                                    <div class="blog-block-content mt-40">
-                                        <span>News & Blog</span>
-                                        <h4 class="title">
-                                            <a href="blog-single.html">Improve Workflow With Agile Construction</a>
-                                        </h4>
-                                        <p class="text">Objectively integrate emerging ratione temporibus magnam praesentium.</p>
-                                        <div class="blog-btn mt-25">
-                                            <a href="#">Read More</a>
+                            {% for res in posts %}
+                                <div class="col-lg-6 col-sm-6">
+                                    <div class="blog-block mt-30">
+                                        <div class="blog-thumb">
+                                            <img src="{{res['mainFoto']}}" alt="">
+                                        </div>
+                                        <div class="blog-block-content mt-40">
+                                            <span>{{res['category']}}</span>
+                                            <h4 class="title">
+                                                <a href="/blog-one?post={{res['id']}}">{{res['title']}}</a>
+                                            </h4>
+                                            <p class="text">{{res['highlight']}}</p>
+                                            <div class="blog-btn mt-25">
+                                                <a href="/blog-one?post={{res['id']}}">Czytaj więcej</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-6 col-sm-6">
+                            {% endfor %}
+                            <!-- <div class="col-lg-6 col-sm-6">
                                 <div class="blog-block mt-30">
                                     <div class="blog-thumb">
                                         <img src="assets/images/blog/02.jpg" alt="">
@@ -130,7 +132,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="row">
                             <div class="col-lg-12">
