@@ -1,0 +1,299 @@
+{% extends 'base.html' %}
+{% block content %}
+    <main>
+        <!-- Banner start -->
+        <div id="banner-section" data-jarallax='{"speed": 0.6}' style="background: url(static/images/banner-kontakt.jpg);">
+            <div class="overlay">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="breadcrubms">
+                                <h2>Kontakt z nami</h2>
+                                <ul class="mt-20">
+                                    <li class="mb-20"><a href="/">DMD</a></li>
+                                    <li><span class="active">Kontakt</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Banner end -->
+
+        <!-- Google map start -->
+        <div id="google-map-section" class="google-map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2989.758129078646!2d20.827873297756266!3d52.252355551478445!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471eb568eb75bfd1%3A0x902febd0544ee028!2sDworkowa%2051%2C%2005-082%20Stare%20Babice%2C%20Poland!5e0!3m2!1sen!2sbd!4v1724147071381!5m2!1sen!2sbd"
+                allowfullscreen="" loading="lazy"></iframe>
+        </div>
+        <!-- Google map end -->
+
+        <!-- Contact start  -->
+        <section id="contact-section" class="contact-area mt-100">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="about-block section-title style-02">
+                            <span class="subtitle">SKONTAKTUJ SIĘ Z NAMI</span>
+                            <h2 class="title"><span>Zostaw nam </span> wiadomość, a my się odezwiemy.</h2>
+                            <p class="text mt-30">Jesteśmy tutaj, aby pomóc w każdym etapie realizacji Twojego projektu instalacyjnego. Napisz do nas, a nasz zespół ekspertów szybko się z Tobą skontaktuje, by omówić szczegóły współpracy i zaproponować najlepsze rozwiązania dla Twojego domu.</p>
+                        </div>
+                        <div class="contact-social d-flex mt-30">
+                            <h6>Śledź nas na: </h6>
+                            <ul class="d-flex">
+                                <li><a href="https://www.facebook.com/dmddomy/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="https://www.youtube.com/channel/UCBRN-SPMEIYK6YRV23Komxw" target="_blank"><i class="fa fa-youtube"></i></a></li>
+                                <li><a href="https://www.instagram.com/dmddomy/" target="_blank"><i class="fa fa-instagram"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                        <div class="comment-form-wrap mt-50">
+                            <div id="form-messages"></div>
+                            <form id="ajax-contact" method="post" action="contact-form.php" class="comment-form contact-form">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="form-group">
+                                            <input type="text" id="name" name="name" class="form-control" placeholder="Imię">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="form-group xs-mt-30">
+                                            <input type="email" id="email" name="email" class="form-control" placeholder="E-mail">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-group mt-30">
+                                            <input type="text" id="subject" name="subject" class="form-control" placeholder="Temat">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="form-group textarea mt-30">
+                                            <textarea id="message" name="message" rows="5" class="form-control" placeholder="Wiadomość"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="comment-btn mt-30">
+                                            <button class="btn btn-primary">
+                                                <i class="flaticon-right icon-arrow before"></i>
+                                                <span class="label">Wyślij</span>
+                                                <i class="flaticon-right icon-arrow after"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-100 xs-mt-60 md-mt-60">
+                    <div class="col-lg-5">
+                        <div class="contact-info-img">
+                            <img src="static/images/contact-info.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="contact-info-content">
+                            <div class="about-block section-title style-02">
+                                <span class="subtitle">Informacje Kontaktowe</span>
+                                <h2 class="title"><span>Współpraca</span> jest Prosta</h2>
+                                <p class="text mt-30">
+                                    Skontaktuj się z nami, aby dowiedzieć się, jak DMD Instalacje może 
+                                    pomóc w realizacji Twojego projektu. Oferujemy kompleksowe wsparcie 
+                                    na każdym etapie – od konsultacji po serwis. Nasz zespół specjalistów 
+                                    chętnie odpowie na wszystkie pytania i zaproponuje najlepsze rozwiązania 
+                                    dla Twojego domu.
+                                </p>
+                            </div>
+                            <div class="row mt-15">
+                                <div class="col-lg-6 col-md-6 mt-20">
+                                    <div class="contact-info-title">
+                                        <h4 class="title">Skontaktuj się z naszym biurem.</h4>
+                                    </div>
+                                    <div class="contact-details">
+                                        <!-- <div class="img">
+                                            <img src="static/images/world-dot-map-gray.png" alt="">
+                                        </div> -->
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="contact-info mt-30">
+                                                    <ul class="d-flex">
+                                                        <li><a href="tel:+48500106006"><i class="fa fa-phone"></i></a></li>
+                                                        <li>
+                                                            <span><a href="tel:+48500106006">+ (48) 500-106-006</a></span>
+                                                            <small>Skontaktuj się z nami bez wahania!</small>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="contact-info mt-30">
+                                                    <ul class="d-flex">
+                                                        <li><a href="mailto:biuro@dmdbudownictwo.pl"><i class="fa fa-envelope"></i></a></li>
+                                                        <li>
+                                                            <span>Adres E-mail</span>
+                                                            <small>biuro@dmdbudownictwo.pl</small>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="contact-info mt-30">
+                                                    <ul class="d-flex">
+                                                        <li><a href="https://www.google.com/maps/dir//Dworkowa+51,+Stare+Babice" target="_blank"><i class="fa fa-map-marker"></i></a></li>
+                                                        <li>
+                                                            <span>Lokalizacja</span>
+                                                            <small>ul. Dworkowa 51 <br> 05-082 Stare Babice, Polska  </small>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 mt-20">
+                                    <div class="contact-info-title xs-mt-30">
+                                        <h4 class="title">Dodatkowy Kontakt</h4>
+                                    </div>
+                                    <div class="contact-details">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="contact-info mt-30 xs-mt-20">
+                                                    <span>Zostaw swój numer telefonu, a rychle oddzwonimy!</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="contact-info mt-30 xs-mt-20">
+                                                    <form id="ask-contact" method="post">
+                                                        <input type="tel" name="phone" placeholder="Twój numer telefonu" required style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                                                        <a href="#" onclick="submitForm(event);" ><i class="far fa-comment"></i> Wyślij</a>
+                                                        <div class="form-message" id="komunikat_z_serwera_ask_phone"></div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Contact end -->
+
+    </main>
+
+    <!-- Newsletter start -->
+    <section id="newsletter-section" class="">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="newsletter">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-5">
+                                <div class="newsletter-content">
+                                    <h2 class="title">NEWSLETTER!</h2>
+                                    <p class="text">Nigdy nie przegapisz niczego od DMD, zapisując się do naszego Newslettera.</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-7">
+                                <div class="newsletter-form">
+                                    <form action="#">
+                                        <div class="row">
+                                            <div class="col-lg-6 mb-2">
+                                                <input type="text" name="name" placeholder="Twoje Imię">
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <input type="email" name="email" placeholder="info@example.com">
+                                                <button><i class="fa-solid fa-envelope"></i></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Newsletter end -->
+
+{% endblock %}
+{% block bottom_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const phoneInput = document.querySelector('input[name="phone"]');
+
+        phoneInput.addEventListener('input', function(event) {
+            let phoneNumber = phoneInput.value.replace(/\D/g, ''); // Usuwa wszystko poza cyframi
+            let formattedNumber = '';
+
+            // Tablica numerów kierunkowych sąsiadów Polski
+            const validCountryCodes = ['48', '49', '420', '421', '375', '380', '371', '370', '7'];
+
+            // Jeśli użytkownik zaczyna od "+" (numer kierunkowy jest w pełni poprawny)
+            if (phoneInput.value.startsWith('+')) {
+                formattedNumber = '+' + phoneNumber;
+            } else {
+                // Sprawdzamy, czy początkowe cyfry to numer kierunkowy
+                const countryCode = validCountryCodes.find(code => phoneNumber.startsWith(code));
+
+                if (countryCode) {
+                    formattedNumber = '+' + phoneNumber;
+                } else {
+                    // Jeśli to nie jest numer kierunkowy, dodajemy domyślnie polski kod
+                    formattedNumber = '+48' + phoneNumber;
+                }
+            }
+
+            // Zatrzymuje użytkownika na wpisaniu tylko 15 cyfr (maksymalna długość numeru telefonu)
+            if (formattedNumber.length > 15) {
+                formattedNumber = formattedNumber.substring(0, 15);
+            }
+
+            // Aktualizuje pole tekstowe w czasie rzeczywistym
+            phoneInput.value = formattedNumber;
+        });
+    });
+
+    function submitForm(event) {
+        event.preventDefault(); // Zapobiegaj domyślnej akcji linku
+        const form = event.target.closest('form'); // Znajdź najbliższy formularz
+        const formData = new FormData(form); // Pobierz dane formularza
+        const jsonFormData = Object.fromEntries(formData.entries());
+
+        fetch('/ask-phone', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(jsonFormData) // Przekazuj dane z formularza
+        })
+        .then(response => response.json())
+        .then(data => {
+            const komunikatDiv = document.getElementById("komunikat_z_serwera_ask_phone");
+            if (komunikatDiv) {
+                komunikatDiv.innerHTML = data.message;
+                if(data.success) {
+                    komunikatDiv.style.color = "#063e90"; // Sukces - Niebieski
+                    form.reset();
+                } else {
+                    komunikatDiv.style.color = "#ff3535"; // Niepowodzenie - czerwony
+                }
+                setTimeout(function() {
+                    komunikatDiv.innerHTML = '';
+                }, 5000);
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+</script>
+{% endblock %}
