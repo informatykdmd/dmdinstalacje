@@ -4347,9 +4347,9 @@ blockquote p span {
 }
 
 .featured-author-social i {
-    height: 35px;
-    width: 35px;
-    line-height: 35px;
+    height: 55px;
+    width: 55px;
+    line-height: 55px;
     border: 1px solid #f4f4f4;
     margin: 0 3px;
     -webkit-transition: all linear .5s;
