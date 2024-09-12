@@ -315,10 +315,12 @@ def smart_truncate(content, length=400):
 #     return {
 #         'latest_blog_posts': get_latest_blog_posts()
 #     }
+
 # Funkcja czyszcząca sesję
+def clear_session():
+    session.clear()  # Czyści dane sesji
 
-
-session.clear()
+clear_session()
 
 @app.route('/')
 def index():
