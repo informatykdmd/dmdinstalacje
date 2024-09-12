@@ -37,11 +37,11 @@
                             {% for res in posts %}
                                 <div class="col-lg-4 col-sm-12">
                                     <div class="blog-block mt-0">
-                                        <div class="blog-block-content mt-0">
+                                        <div class="blog-block-content mt-3">
                                             <h4 class="title">
                                                 <a href="/blog-one?post={{res['id']}}">{{res['title']}}</a>
                                             </h4>
-                                            <span>{{res['category']}} </span>
+                                            <span class="mt-3">{{res['category']}} </span>
                                             <p class="mt-3"><strong>{{res['author']}} - {{res['data']}}</strong></p>
                                             <div class="blog-btn mt-25">
                                                 <a href="/blog-one?post={{res['id']}}">Czytaj więcej</a>
