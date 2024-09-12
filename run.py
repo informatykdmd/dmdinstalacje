@@ -316,19 +316,9 @@ def smart_truncate(content, length=400):
 #         'latest_blog_posts': get_latest_blog_posts()
 #     }
 # Funkcja czyszcząca sesję
-def clear_session():
-    session.clear()  # Czyści dane sesji
 
-@app.before_request
-def startup():
-    clear_session()  # Tutaj wywołujemy funkcję czyszczącą sesję
-    # Opcjonalnie: wyczyść pliki sesji z katalogu
-    session_directory = app.config.get('SESSION_FILE_DIR', None)
-    if session_directory and os.path.exists(session_directory):
-        for session_file in os.listdir(session_directory):
-            file_path = os.path.join(session_directory, session_file)
-            if os.path.isfile(file_path):
-                os.unlink(file_path)  # Usuwa pliki sesji z folderu
+
+session.clear()
 
 @app.route('/')
 def index():
