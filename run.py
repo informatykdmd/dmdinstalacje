@@ -319,7 +319,7 @@ def smart_truncate(content, length=400):
 def clear_session():
     session.clear()  # Czyści dane sesji
 
-@app.before_first_request
+@app.before_request
 def startup():
     clear_session()  # Tutaj wywołujemy funkcję czyszczącą sesję
     # Opcjonalnie: wyczyść pliki sesji z katalogu
