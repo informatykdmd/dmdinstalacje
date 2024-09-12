@@ -4475,7 +4475,7 @@ blockquote p span {
 }
 
 .single-comment-wrap .content h5 {
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .single-comment-wrap .content h5 span {
@@ -4913,18 +4913,19 @@ blockquote p span {
     color: var(--color-white);
 }
 
-.horizontal-list {
+.horizontal-list-stars {
     list-style-type: none; /* Usuwa domyślny styl listy (kropki, cyfry) */
     padding: 0;
     margin: 0;
+    color: gold;
     display: flex; /* Ustawia elementy w poziomej linii */
   }
   
-  .horizontal-list li {
+  .horizontal-list-stars li {
     margin-right: 20px; /* Odstęp między elementami listy */
   }
   
-  .horizontal-list li:last-child {
+  .horizontal-list-stars li:last-child {
     margin-right: 0; /* Usuwa odstęp po ostatnim elemencie */
   }
   
