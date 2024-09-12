@@ -32,6 +32,9 @@
                     <div class="col-xl-8 col-lg-8 col-md-12">
                         <!-- Blog content details -->
                         <div class="blog-content style-01 mt-30">
+                            <div class="thumb">
+                                <img src="{{choiced['contentFoto']}}" alt="blog image">
+                            </div>
                             <h3 class="title mt-30">
                                 {{choiced['title']}}
                             </h3>
@@ -49,9 +52,11 @@
                                             {{choiced['len']}} Komentarzy
                                         </a>
                                     </li>
-                                    <li></li>
-                                        <i class="fa fa-calendar"></i>
-                                        {{choiced['data']}}
+                                    <li>
+                                        <a href="#!">
+                                            <i class="fa fa-calendar"></i>
+                                            {{choiced['data']}}
+                                        </a>
                                     </li>
                                     
                                 </ul>
@@ -59,9 +64,6 @@
                             <p class="text mt-20">
                                 {{choiced['introduction']}}
                             </p>
-                            <div class="thumb">
-                                <img src="{{choiced['contentFoto']}}" alt="blog image">
-                            </div>
                             <blockquote class="mt-35">
                                 <p>
                                     {{choiced['highlight']}}
