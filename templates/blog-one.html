@@ -210,11 +210,11 @@
                             <div class="blog-sidebar-widget mb-55">
                                 <div class="blog-sidebar-widget-content">
                                     <div class="blog-sidebar-widget-head mb-30">
-                                        <h3 class="blog-sidebar-widget-title">Search Here</h3>
+                                        <h3 class="blog-sidebar-widget-title">Przeszukaj Blog</h3>
                                     </div>
                                     <div class="blog-sidebar-search p-relative">
-                                        <form action="#">
-                                            <input type="text" placeholder="Search news">
+                                        <form method="POST" action="{{ url_for('searchBlog') }}" enctype="multipart/form-data">
+                                            <input type="text" placeholder="Search news" name="query" required>
                                             <button type="submit">
                                                 <i class="fa-solid fa-magnifying-glass"></i>
                                             </button>
@@ -224,58 +224,37 @@
                             </div>
                             <div class="blog-sidebar-widget mb-55">
                                 <div class="blog-sidebar-widget-head mb-30">
-                                    <h3 class="blog-sidebar-widget-title">Recent posts</h3>
+                                    <h3 class="blog-sidebar-widget-title">Polecane Blogi</h3>
                                 </div>
                                 <div class="blog-sidebar-widget-content">
                                     <div class="rc-post-wrapper">
-                                        <div class="rc-post d-flex align-items-start mt-20">
-                                            <div class="rc-thumb pr-20">
-                                                <a href="blog-single.html"><img src="static/images/blog/recent-post/01.jpg" alt=""></a>
-                                            </div>
-                                            <div class="rc-content">
-                                                <h6 class="rc-title"><a href="blog-single.html">Intrinsic Motivation.</a></h6>
-                                                <div class="rc-meta">
-                                                    <span><i class="fa-solid fa-calendar-days"></i> October 30, 2021</span>
+                                        {% for rPost in recentPosts %}
+                                            <div class="rc-post d-flex align-items-start mt-20">
+                                                <div class="rc-thumb pr-20">
+                                                    <a href="/blog-one?post={{rPost['id']}}"><img src="{{rPost['contentFoto']}}" alt=""></a>
+                                                </div>
+                                                <div class="rc-content">
+                                                    <h6 class="rc-title"><a href="/blog-one?post={{rPost['id']}}">{{rPost['title']}}</a></h6>
+                                                    <div class="rc-meta">
+                                                        <span><i class="fa-solid fa-calendar-days"></i> {{rPost['data']}}</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="rc-post d-flex align-items-start mt-20">
-                                            <div class="rc-thumb pr-20">
-                                                <a href="blog-single.html"><img src="static/images/blog/recent-post/02.jpg" alt=""></a>
-                                            </div>
-                                            <div class="rc-content">
-                                                <h6 class="rc-title"><a href="blog-single.html">Grading Student.</a></h6>
-                                                <div class="rc-meta">
-                                                    <span><i class="fa-solid fa-calendar-days"></i> October 25, 2021</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="rc-post d-flex align-items-start mt-20">
-                                            <div class="rc-thumb pr-20">
-                                                <a href="blog-single.html"><img src="static/images/blog/recent-post/03.jpg" alt=""></a>
-                                            </div>
-                                            <div class="rc-content">
-                                                <h6 class="rc-title"><a href="blog-single.html">Evolution of Visual</a></h6>
-                                                <div class="rc-meta">
-                                                    <span><i class="fa-solid fa-calendar-days"></i> October 24, 2021</span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
                             <div class="blog-sidebar-widget mb-55">
                                 <div class="blog-sidebar-widget-head mb-30">
-                                    <h3 class="blog-sidebar-widget-title">Category</h3>
+                                    <h3 class="blog-sidebar-widget-title">Kategorie Blogów</h3>
                                 </div>
                                 <div class="blog-sidebar-widget-content">
                                     <ul>
-                                        <li><a href="blog.html"><i class="fa-solid fa-angle-right"></i> Construction</a></li>
-                                        <li><a href="blog.html"><i class="fa-solid fa-angle-right"></i> Industrial (4)</a></li>
-                                        <li><a href="blog.html"><i class="fa-solid fa-angle-right"></i> Automation  (8)</a></li>
-                                        <li><a href="blog.html"><i class="fa-solid fa-angle-right"></i> Business  (5)</a></li>
-                                        <li><a href="blog.html"><i class="fa-solid fa-angle-right"></i> UX Design  (3)</a></li>
-                                        <li><a href="blog.html"><i class="fa-solid fa-angle-right"></i> WordPress  (3)</a></li>
+                                        {% for cat, count in cat_dict.items() %}
+                                            {% if count > 1 %}
+                                                <li><a href="/find-by-category?category={{cat}}"><i class="fa-solid fa-angle-right"></i> {{cat}} <span>({{count}})</span></a></li>
+                                            {% endif %}
+                                        {% endfor %}
                                     </ul>
                                 </div>
                             </div>
