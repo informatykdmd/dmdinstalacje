@@ -321,11 +321,13 @@ def index():
     session['page'] = 'index'
     pageTitle = 'Strona Główna'
 
-    if f'TEAM-ALL' not in session:
-        team_list = generator_teamDB()
-        session[f'TEAM-ALL'] = team_list
-    else:
-        team_list = session[f'TEAM-ALL']
+    team_list = generator_teamDB()
+
+    # if f'TEAM-ALL' not in session:
+    #     team_list = generator_teamDB()
+    #     session[f'TEAM-ALL'] = team_list
+    # else:
+    #     team_list = session[f'TEAM-ALL']
 
     treeListTeam = []
     for i, member in enumerate(team_list):
@@ -378,7 +380,6 @@ def kontakt():
 def myZespol():
     session['page'] = 'myZespol'
     pageTitle = 'Zespół'
-
 
     if f'TEAM-ALL' not in session:
         team_list = generator_teamDB()
