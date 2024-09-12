@@ -86,7 +86,7 @@
                             {% if choiced['len'] > 0 %}
                                 <h3 class="comments-title">Komentarze ({{choiced['len']}})</h3>
                                 {% for comm in choiced['comments'].values() %}
-                                    <div class="row single-comment-wrap mt-50 pl-50">
+                                    <div class="row single-comment-wrap mt-50">
                                         <div class="thumb col-sm-2">
                                             {% if comm['avatar'] %}
                                                 <img src="{{comm['avatar']}}" alt="comment images">
