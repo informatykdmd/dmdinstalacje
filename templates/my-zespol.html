@@ -43,78 +43,43 @@
             </div>
             <div class="row justify-content-center">
                 <div class="row mt-30">
-                    <div class="col-xl-4 col-lg-4 col-md-6">
-                        <div class="team-block mt-30">
-                            <div class="team-img">
-                                <div class="team-shape-img">
-                                    <img src="static/images/hero-shape.png" alt="">
+                    {% for member in fullListTeam %}
+                        <div class="col-xl-4 col-lg-4 col-md-6">
+                            <div class="team-block mt-30">
+                                <div class="team-img">
+                                    <div class="team-shape-img">
+                                        <img src="static/images/hero-shape.png" alt="">
+                                    </div>
+                                    <img src="{{ member['EMPLOYEE_PHOTO'] }}" alt="">
                                 </div>
-                                <img src="https://dmddomy.pl/images/team/tm-01-460x460-dariusz_dobrosielski.png" alt="">
-                            </div>
-                            <div class="team-content">
-                                <h4>Dariusz Dobrosielski</h4>
-                                <span>Właściciel</span>
-                                <div class="team-social d-flex mt-10">
-                                    <h6>Kontakt: </h6>
-                                    <ul class="d-flex">
-                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                        <!-- <li><a href="#"><i class="fa fa-pinterest"></i></a></li> -->
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6">
-                        <div class="team-block mt-30">
-                            <div class="team-img">
-                                <div class="team-shape-img">
-                                    <img src="static/images/hero-shape.png" alt="">
-                                </div>
-                                <img src="https://dmddomy.pl/images/team/tm-01-460x460-dariusz_dobrosielski.png" alt="">
-                            </div>
-                            <div class="team-content">
-                                <h4>Dariusz Dobrosielski</h4>
-                                <span>Właściciel</span>
-                                <div class="team-social d-flex mt-10">
-                                    <h6>Kontakt: </h6>
-                                    <ul class="d-flex">
-                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                        <!-- <li><a href="#"><i class="fa fa-pinterest"></i></a></li> -->
-                                    </ul>
+                                <div class="team-content">
+                                    <h4>{{ member['EMPLOYEE_NAME'] }}</h4>
+                                    <span>{{ member['EMPLOYEE_ROLE'] }}</span>
+                                    <div class="team-social d-flex mt-10">
+                                        <h6>Kontakt: </h6>
+                                        {% if member['PHONE'] or member['EMAIL'] or member['FACEBOOK'] or member['LINKEDIN'] %}
+                                            <ul class="d-flex">
+                                                {% if member['PHONE'] %}
+                                                    <li><a href="tel:{{ member['PHONE'] }}"><i class="fa fa-phone"></i></a></li>
+                                                {% endif %}
+                                                {% if member['EMAIL'] %}
+                                                    <li><a href="mailto:{{ member['EMAIL'] }}"><i class="fa fa-envelope"></i></a></li>
+                                                {% endif %}
+                                                {% if member['FACEBOOK'] %}
+                                                    <li><a href="tel:{{ member['FACEBOOK'] }}"><i class="fa fa-facebook"></i></a></li>
+                                                {% endif %}
+                                                {% if member['LINKEDIN'] %}
+                                                    <li><a href="tel:{{ member['LINKEDIN'] }}"><i class="fa fa-linkedin"></i></a></li>
+                                                {% endif %}
+                                            </ul>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-xl-4 col-lg-4 col-md-6">
-                        <div class="team-block mt-30">
-                            <div class="team-img">
-                                <div class="team-shape-img">
-                                    <img src="static/images/hero-shape.png" alt="">
-                                </div>
-                                <img src="https://dmddomy.pl/images/team/tm-01-460x460-dariusz_dobrosielski.png" alt="">
-                            </div>
-                            <div class="team-content">
-                                <h4>Dariusz Dobrosielski</h4>
-                                <span>Właściciel</span>
-                                <div class="team-social d-flex mt-10">
-                                    <h6>Kontakt: </h6>
-                                    <ul class="d-flex">
-                                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                        <!-- <li><a href="#"><i class="fa fa-pinterest"></i></a></li> -->
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
+                    
+                    
                 </div>
             </div>
         </div>

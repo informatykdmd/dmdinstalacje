@@ -376,12 +376,24 @@ def kontakt():
 
 @app.route('/my-zespol')
 def myZespol():
-    session['page'] = 'Zespol'
-    pageTitle = 'Nasz Zespoł'
+    session['page'] = 'myZespol'
+    pageTitle = 'Zespół'
 
+
+    if f'TEAM-ALL' not in session:
+        team_list = generator_teamDB()
+        session[f'TEAM-ALL'] = team_list
+    else:
+        team_list = session[f'TEAM-ALL']
+
+    fullListTeam = []
+    for i, member in enumerate(team_list):
+       fullListTeam.append(member)
+    
     return render_template(
-        f'my-zespol.html',
-        pageTitle=pageTitle
+        f'myZespol.html',
+        pageTitle=pageTitle,
+        fullListTeam=fullListTeam
         )
 
 @app.route('/blog')
