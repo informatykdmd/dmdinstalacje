@@ -119,31 +119,32 @@
                                 {% endfor %}
                             {% endif %}
                             <div class="comment-form-wrap mt-50">
-                                <h3 class="reply-title">Give your Reply</h3>
-                                <p>Your email address will not be published. Required fields are marked *</p>
-                                <div id="form-messages"></div>
-                                <form id="ajax-contact" method="post" action="mailer.php" class="comment-form mt-15">
+                                <h3 class="reply-title">Pozostaw po sobie ślad</h3>
+                                <p>Twój asdres email nie będzie opublikowany. Wszystkie pola wymagane *</p>
+                                <div id="komunikat_z_serwera"></div>
+                                <form id="ajax-contact" class="comment-form mt-15">
                                     <div class="row">
                                         <div class="col-lg-6">
                                             <div class="form-group mt-30">
-                                                <input type="text" id="name" name="name" class="form-control" placeholder="Name">
+                                                <input type="text" id="name" name="Name" class="form-control" placeholder="Imię" required />
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
                                             <div class="form-group mt-30">
-                                                <input type="email" id="email" name="email" class="form-control" placeholder="Email">
+                                                <input type="email" id="email" name="Email" class="form-control" placeholder="E-mail">
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="form-group textarea mt-30">
-                                                <textarea name="message" rows="5" id="message" class="form-control" placeholder="Comments"></textarea>
+                                                <textarea name="Comment" rows="5" id="message" class="form-control" placeholder="Komentarz..."></textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="form-group submit-btn mt-30">
-                                                <button class="btn btn-primary">
+                                                <input type="hidden" name="id" value="{{choiced['id']}}" />
+                                                <button class="btn btn-primary" id="przycisk">
                                                     <i class="flaticon-right icon-arrow before"></i>
-                                                    <span class="label">Submit Request</span>
+                                                    <span class="label">Komentuj Post</span>
                                                     <i class="flaticon-right icon-arrow after"></i>
                                                 </button>
                                             </div>
@@ -258,4 +259,49 @@
 
     </main>
 
+{% endblock %}
+{% block bottom_scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('ajax-contact').addEventListener('submit', function(e) {
+            e.preventDefault(); // Zapobiegaj domyślnej akcji formularza
+            const formData = new FormData(this); // Użyj 'this', aby odnieść się do formularza
+            const jsonFormData = Object.fromEntries(formData.entries());
+
+            fetch('/add-comm-pl', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(jsonFormData) // Przekazuj dane z formularza
+            })
+            .then(response => response.json())
+            .then(data => {
+                // console.log(data);
+
+                const komunikatDiv = document.getElementById("komunikat_z_serwera");
+                if (komunikatDiv) {
+                    komunikatDiv.innerHTML = data.message;
+                    // Ustawienie koloru komunikatu na podstawie wartości 'success'
+                    if(data.success) {
+                        komunikatDiv.style.color = "#063e90"; // Sukces - zielony
+                        document.getElementById('Comments').reset();
+                        setTimeout(function() { // Opóźnienie przed przeładowaniem, aby użytkownik zdążył zobaczyć komunikat
+                            window.location.reload();
+                        }, 1500);
+                    } else {
+                        komunikatDiv.style.color = "#ff3535"; // Niepowodzenie - czerwony
+                    }
+                    setTimeout(function() {
+                        komunikatDiv.innerHTML = '';
+                    }, 5000);
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    });
+</script>
+    
 {% endblock %}
