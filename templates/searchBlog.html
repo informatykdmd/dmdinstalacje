@@ -37,22 +37,14 @@
                             {% for res in posts %}
                                 <div class="col-lg-4 col-sm-12">
                                     <div class="blog-block mt-30">
-                                        <!-- <div class="blog-thumb">
-                                            <a href="/blog-one?post={{res['id']}}">
-                                                <img src="{{res['mainFoto']}}" alt="">
-                                            </a>
-                                        </div> -->
-                                        <div class="blog-block-content mt-40">
+                                        <div class="blog-block-content mt-5">
                                             <h4 class="title">
                                                 <a href="/blog-one?post={{res['id']}}">{{res['title']}}</a>
                                             </h4>
-                                            
-                                            <p class="mt-3"><span>{{res['category']}}</span> <strong>{{res['author']}} - {{res['data']}}</strong></p>
-
-                                            <!-- <p class="text">{{res['highlight']}}</p> -->
-                                            <!-- <div class="blog-btn mt-25">
+                                            <p class="mt-3">{{res['category']}} <strong>{{res['author']}} - {{res['data']}}</strong></p>
+                                            <div class="blog-btn mt-25">
                                                 <a href="/blog-one?post={{res['id']}}">Czytaj więcej</a>
-                                            </div> -->
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
