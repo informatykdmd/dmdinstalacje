@@ -76,6 +76,19 @@
                                             <textarea id="message" name="message" rows="5" class="form-control" placeholder="Wiadomość"></textarea>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-1">
+                                            <input class="polityka-switch" type="checkbox" id="polityka_przywatnosci" name="condition">
+                                            <label class="polityka-switch-label" for="polityka_przywatnosci"></label>
+                                        </div>
+                                        <div class="col-10">
+                                            <label class="form-check-label" style="font-size: 13px; line-height: 1.2;" for="polityka_przywatnosci">
+                                                Akceptuję politykę prywatności DMD TRANSPORT, niniejszym wyrażam zgodę na 
+                                                przetwarzanie moich danych osobowych zawartych w niniejszym formularzu w celach 
+                                                kontaktowych, zgodnie z obowiązującą polityką prywatności.
+                                            </label>
+                                        </div>
+                                    </div> 
                                     <div class="col-lg-12">
                                         <div class="comment-btn mt-30">
                                             <button class="btn btn-primary">
@@ -85,6 +98,7 @@
                                             </button>
                                         </div>
                                     </div>
+                                    <div class="form-message" id="komunikat_z_serwera"></div>
                                 </div>
                             </form>
                         </div>
@@ -227,6 +241,50 @@
 {% endblock %}
 {% block bottom_scripts %}
 <script>
+    document.querySelector('.polityka-switch-label').addEventListener('click', function() {
+        const input = document.getElementById('polityka_przywatnosci');
+        input.checked = !input.checked;
+        input.value = input.checked ? 1 : 0; // Aktualizacja value checkboxa
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('ajax-contact').addEventListener('submit', function(e) {
+                e.preventDefault(); // Zapobiegaj domyślnej akcji formularza
+                const formData = new FormData(this); // Użyj 'this', aby odnieść się do formularza
+                const jsonFormData = Object.fromEntries(formData.entries());
+
+                fetch('/send-mess-pl', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(jsonFormData) // Przekazuj dane z formularza
+                })
+                .then(response => response.json())
+                .then(data => {
+                // console.log(data);
+
+                const komunikatDiv = document.getElementById("komunikat_z_serwera");
+                if (komunikatDiv) {
+                    komunikatDiv.innerHTML = data.message;
+                    // Ustawienie koloru komunikatu na podstawie wartości 'success'
+                    if(data.success) {
+                            komunikatDiv.style.color = "#063e90"; // Sukces - Niebieski
+                            document.getElementById('ajax-contact').reset();
+                    } else {
+                            komunikatDiv.style.color = "#ff3535"; // Niepowodzenie - czerwony
+                    }
+                    setTimeout(function() {
+                            komunikatDiv.innerHTML = '';
+                    }, 5000);
+                }
+                })
+                .catch((error) => {
+                console.error('Error:', error);
+                });
+        });
+    });
+
     document.addEventListener('DOMContentLoaded', function() {
         const phoneInput = document.querySelector('input[name="phone"]');
 
