@@ -488,83 +488,32 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="blog-block mt-30">
-                            <div class="blog-thumb">
-                                <a href="#">
-                                    <img src="https://dmddomy.pl/images/blog/17240487051920.jpg" alt="">
-                                </a>
-                            </div>
-                            <div class="blog-block-content mt-40">
-                                <span><a href="#">Aktualności budowlane</a></span>
-                                <h4 class="title">
-                                    <a href="#">Finalizacja Budowy Szkoły w Opypach: Gotowi na Nowy Rok Szkolny!</a>
-                                </h4>
-                                <p class="text"><a href="#">
-                                    Ostatnie dni były kluczowe dla finalizacji projektu szkoły w Opypach. 
-                                    Układanie kostki wokół budynku oraz w mobilnych pracowniach zostało 
-                                    zakończone na czas, co gwarantuje, że wszystko będzie gotowe na 
-                                    rozpoczęcie roku szkolnego. Czasu było niewiele, ale zespół, pełen 
-                                    determinacji, sprostał wyzwaniom, dostarczając efekt, z którego 
-                                    wszyscy mogą być dumni.
-                                </a></p>
-                                <p class="mt-3"><strong>Paweł Perliński - 19 sierpnia 2024</strong></p>
-                                <div class="blog-btn mt-25">
-                                    <a href="#">Czytaj więcej</a>
+                    {% for post in blog_post_three %}
+                        <div class="col-lg-4 col-sm-6">
+                            <div class="blog-block mt-30">
+                                <div class="blog-thumb">
+                                    <a href="/blog-one?post={{post['id']}}">
+                                        <img src="{{ post['mainFoto'] }}" alt="">
+                                    </a>
+                                </div>
+                                <div class="blog-block-content mt-40">
+                                    <span><a href="/blog-one?post={{post['id']}}">{{ post['category'] }}</a></span>
+                                    <h4 class="title">
+                                        <a href="/blog-one?post={{post['id']}}">{{ post['title'] }}</a>
+                                    </h4>
+                                    <p class="text"><a href="#">
+                                        {{ post['highlight'] }}
+                                    </a></p>
+                                    <p class="mt-3"><strong>{{ post['author'] }} - {{ post['data'] }}</strong></p>
+                                    <div class="blog-btn mt-25">
+                                        <a href="/blog-one?post={{post['id']}}">Czytaj więcej</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="blog-block mt-30">
-                            <div class="blog-thumb">
-                                <img src="https://dmddomy.pl/images/blog/17240487051920.jpg" alt="">
-                            </div>
-                            <div class="blog-block-content mt-40">
-                                <span>Aktualności budowlane</span>
-                                <h4 class="title">
-                                    <a href="blog-single.html">Finalizacja Budowy Szkoły w Opypach: Gotowi na Nowy Rok Szkolny!</a>
-                                </h4>
-                                <p class="text">
-                                    Ostatnie dni były kluczowe dla finalizacji projektu szkoły w Opypach. 
-                                    Układanie kostki wokół budynku oraz w mobilnych pracowniach zostało 
-                                    zakończone na czas, co gwarantuje, że wszystko będzie gotowe na 
-                                    rozpoczęcie roku szkolnego. Czasu było niewiele, ale zespół, pełen 
-                                    determinacji, sprostał wyzwaniom, dostarczając efekt, z którego 
-                                    wszyscy mogą być dumni.
-                                </p>
-                                <p class="mt-3"><strong>Paweł Perliński - 19 sierpnia 2024</strong></p>
-                                <div class="blog-btn mt-25">
-                                    <a href="#">Czytaj więcej</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="blog-block mt-30">
-                            <div class="blog-thumb">
-                                <img src="https://dmddomy.pl/images/blog/17240487051920.jpg" alt="">
-                            </div>
-                            <div class="blog-block-content mt-40">
-                                <span>Aktualności budowlane</span>
-                                <h4 class="title">
-                                    <a href="blog-single.html">Finalizacja Budowy Szkoły w Opypach: Gotowi na Nowy Rok Szkolny!</a>
-                                </h4>
-                                <p class="text">
-                                    Ostatnie dni były kluczowe dla finalizacji projektu szkoły w Opypach. 
-                                    Układanie kostki wokół budynku oraz w mobilnych pracowniach zostało 
-                                    zakończone na czas, co gwarantuje, że wszystko będzie gotowe na 
-                                    rozpoczęcie roku szkolnego. Czasu było niewiele, ale zespół, pełen 
-                                    determinacji, sprostał wyzwaniom, dostarczając efekt, z którego 
-                                    wszyscy mogą być dumni.
-                                </p>
-                                <p class="mt-3"><strong>Paweł Perliński - 19 sierpnia 2024</strong></p>
-                                <div class="blog-btn mt-25">
-                                    <a href="#">Czytaj więcej</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
+                    
+                    
                 </div>
             </div>
         </section>
