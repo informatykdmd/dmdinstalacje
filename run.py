@@ -6,7 +6,7 @@ from datetime import datetime
 from googletrans import Translator
 import random
 import re
-
+import os
 from flask_session import Session
 
 app = Flask(__name__)
@@ -315,13 +315,31 @@ def smart_truncate(content, length=400):
 #     return {
 #         'latest_blog_posts': get_latest_blog_posts()
 #     }
-del session
+# Funkcja czyszcząca sesję
+def clear_session():
+    session.clear()  # Czyści dane sesji
+
+@app.before_first_request
+def startup():
+    clear_session()  # Tutaj wywołujemy funkcję czyszczącą sesję
+    # Opcjonalnie: wyczyść pliki sesji z katalogu
+    session_directory = app.config.get('SESSION_FILE_DIR', None)
+    if session_directory and os.path.exists(session_directory):
+        for session_file in os.listdir(session_directory):
+            file_path = os.path.join(session_directory, session_file)
+            if os.path.isfile(file_path):
+                os.unlink(file_path)  # Usuwa pliki sesji z folderu
+
 @app.route('/')
 def index():
     session['page'] = 'index'
     pageTitle = 'Strona Główna'
 
-    team_list = generator_teamDB()
+    if f'TEAM-ALL' not in session:
+        team_list = generator_teamDB()
+        session[f'TEAM-ALL'] = team_list
+    else:
+        team_list = session[f'TEAM-ALL']
 
     treeListTeam = []
     for i, member in enumerate(team_list):
