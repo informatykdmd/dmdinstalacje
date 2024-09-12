@@ -799,10 +799,10 @@
                     komunikatDiv.innerHTML = data.message;
                     // Ustawienie koloru komunikatu na podstawie wartości 'success'
                     if(data.success) {
-                            komunikatDiv.style.color = "#19a3ff"; // Sukces - Niebieski
+                            komunikatDiv.style.color = "#063e90"; // Sukces - Niebieski
                             document.getElementById('ajax-contact').reset();
                     } else {
-                            komunikatDiv.style.color = "#ff"; // Niepowodzenie - biały
+                            komunikatDiv.style.color = "#ff3535"; // Niepowodzenie - czerwony
                     }
                     setTimeout(function() {
                             komunikatDiv.innerHTML = '';
@@ -837,10 +837,10 @@
                     komunikatDiv.innerHTML = data.message;
                     // Ustawienie koloru komunikatu na podstawie wartości 'success'
                     if(data.success) {
-                        komunikatDiv.style.color = "green"; // Sukces - zielony
+                        komunikatDiv.style.color = "#19a3ff"; // Sukces 
                         document.getElementById('newsletter_form').reset();
                     } else {
-                        komunikatDiv.style.color = "red"; // Niepowodzenie - czerwony
+                        komunikatDiv.style.color = "white"; // Niepowodzenie 
                     }
                     setTimeout(function() {
                         komunikatDiv.innerHTML = '';
