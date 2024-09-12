@@ -86,15 +86,15 @@
                             {% if choiced['len'] > 0 %}
                                 <h3 class="comments-title">Komentarze ({{choiced['len']}})</h3>
                                 {% for comm in choiced['comments'].values() %}
-                                    <div class="row single-comment-wrap mb-25">
-                                        <div class="thumb col-sm-3">
+                                    <div class="row single-comment-wrap mt-50 pl-50">
+                                        <div class="thumb col-sm-2">
                                             {% if comm['avatar'] %}
                                                 <img src="{{comm['avatar']}}" alt="comment images">
                                             {% else %}
                                                 <img src="static/images/author-noface.jpg" alt="comment images">
                                             {% endif %}
                                         </div>
-                                        <div class="col-sm-9">
+                                        <div class="col-sm-10">
                                             <div class="row content">
                                                 <div class="col-sm-12">
                                                     <h5 class="title">{{comm['user']}}  <span><i class="fa-solid fa-calendar-days"></i> {{comm['data-time']}}</span></h5>
