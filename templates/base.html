@@ -183,8 +183,8 @@
                                             <div id="myOverlay" class="overlay">
                                                 <span class="closebtn" onclick="closeSearch()" title="Close Overlay">×</span>
                                                 <div class="overlay-content">
-                                                    <form action="#">
-                                                        <input type="text" placeholder="Przeszukaj bloga" name="search">
+                                                    <form method="POST" action="{{ url_for('searchBlog') }}" enctype="multipart/form-data">
+                                                        <input type="text" name="query" placeholder="Przeszukaj bloga" required>
                                                         <button type="submit"><i class="fa fa-search"></i></button>
                                                     </form>
                                                 </div>
