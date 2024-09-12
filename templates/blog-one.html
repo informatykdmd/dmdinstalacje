@@ -202,7 +202,7 @@
                                 <div class="blog-sidebar-widget-content">
                                     <div class="tagcloud">
                                         {% for tag in choiced['tags'] %}
-                                            <a href="/find-by-tags?tag={{tag[1:]}}">{{tag}}</a>
+                                            <a href="/find-by-tags?tag={{tag[1:]}}">{{tag[1:]}}</a>
                                         {% endfor %}
                                     </div>
                                 </div>
