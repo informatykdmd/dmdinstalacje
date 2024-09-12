@@ -81,7 +81,7 @@
                         </div>
 
                         <!-- Blog comments area -->
-                        <div class="comments-area mt-50">
+                        <div class="comments-area mt-50" id="comment-section">
                             <h3 class="comments-title">05 comments for this post</h3>
                             <ul class="comment-list mt-50">
                                 <li>
@@ -169,11 +169,11 @@
                                 <div class="blog-sidebar-widget-content">
                                     <div class="blog-sidebar-about">
                                         <div class="featured-author text-center">
-                                            <a href="#form-messages">
-                                                <img src="{{choiced['author']}}" alt="">
+                                            <a href="#comment-section">
+                                                <img src="{{choiced['author_avatar']}}" alt="">
                                             </a>
                                             <h6 class="featured-author-title mt-30">
-                                                <a href="#form-messages">{{choiced['author']}}</a></h6>
+                                                <a href="#comment-section">{{choiced['author']}}</a></h6>
                                             <small class="designation">Autor Posta</small>
                                             <p>
                                                 {{choiced['author_about']}}
