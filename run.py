@@ -416,40 +416,40 @@ def blogs():
 def blogOne():
     session['page'] = 'blogOne'
     
-    # if 'post' in request.args:
-    #     post_id = request.args.get('post')
-    #     try: post_id_int = int(post_id)
-    #     except ValueError: return redirect(url_for('blogs'))
-    # else:
-    #     return redirect(url_for(f'blogs'))
+    if 'post' in request.args:
+        post_id = request.args.get('post')
+        try: post_id_int = int(post_id)
+        except ValueError: return redirect(url_for('blogs'))
+    else:
+        return redirect(url_for(f'blogs'))
     
-    # choiced = generator_daneDBList_one_post_id(post_id_int)[0]
-    # choiced['len'] = len(choiced['comments'])
-    # pageTitle = choiced['title']
+    choiced = generator_daneDBList_one_post_id(post_id_int)[0]
+    choiced['len'] = len(choiced['comments'])
+    pageTitle = choiced['title']
 
-    # cats = generator_daneDBList_cetegory()
-    # cat_dict = cats[1]
-    # take_id_rec_pos = generator_daneDBList_RecentPosts(post_id_int)
-    # recentPosts = []
-    # for idp in take_id_rec_pos:
-    #     t_post = generator_daneDBList_one_post_id(idp)[0]
-    #     theme = {
-    #         'id': t_post['id'],
-    #         'title': t_post['title'],
-    #         'mainFoto': t_post['mainFoto'],
-    #         'contentFoto': t_post['contentFoto'],
-    #         'category': t_post['category'],
-    #         'author': t_post['author'],
-    #         'data': t_post['data']
-    #     }
-    #     recentPosts.append(theme)
+    cats = generator_daneDBList_cetegory()
+    cat_dict = cats[1]
+    take_id_rec_pos = generator_daneDBList_RecentPosts(post_id_int)
+    recentPosts = []
+    for idp in take_id_rec_pos:
+        t_post = generator_daneDBList_one_post_id(idp)[0]
+        theme = {
+            'id': t_post['id'],
+            'title': t_post['title'],
+            'mainFoto': t_post['mainFoto'],
+            'contentFoto': t_post['contentFoto'],
+            'category': t_post['category'],
+            'author': t_post['author'],
+            'data': t_post['data']
+        }
+        recentPosts.append(theme)
 
     return render_template(
         f'blog-one.html',
-        # pageTitle=pageTitle,
-        # choiced=choiced,
-        # cat_dict=cat_dict,
-        # recentPosts=recentPosts
+        pageTitle=pageTitle,
+        choiced=choiced,
+        cat_dict=cat_dict,
+        recentPosts=recentPosts
         )
 
 
