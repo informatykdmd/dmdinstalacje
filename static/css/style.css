@@ -4351,6 +4351,7 @@ blockquote p span {
     width: 55px;
     line-height: 55px;
     border: 1px solid #f4f4f4;
+    font-size: xx-large;
     margin: 0 3px;
     -webkit-transition: all linear .5s;
     -moz-transition: all linear .5s;
