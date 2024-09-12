@@ -285,7 +285,7 @@
                     // Ustawienie koloru komunikatu na podstawie wartości 'success'
                     if(data.success) {
                         komunikatDiv.style.color = "#063e90"; // Sukces - zielony
-                        document.getElementById('Comments').reset();
+                        document.getElementById('ajax-contact').reset();
                         setTimeout(function() { // Opóźnienie przed przeładowaniem, aby użytkownik zdążył zobaczyć komunikat
                             window.location.reload();
                         }, 1500);
