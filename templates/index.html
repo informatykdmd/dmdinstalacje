@@ -342,8 +342,7 @@
                                 <h3 class="title"> Napisz do<span> Nas</span> </h3>
 
                                 <div class="request-form mt-30">
-                                    <div id="form-messages"></div>
-                                    <form id="ajax-contact" method="post" action="quote-form.php" class="request-page-form" novalidate="novalidate">
+                                    <form id="ajax-contact" method="post" class="request-page-form" novalidate="novalidate">
                                         <div class="row">
                                             <div class="col-lg-6 col-md-12">
                                                 <div class="form-group">
@@ -378,6 +377,7 @@
                                                     </label>
                                                 </div>
                                             </div>
+                                            <div class="form-message" id="komunikat_z_serwera"></div>
                                             <div class="col-lg-12 col-md-12">
                                                 <div class="form-group submit-btn mt-50">
                                                     <button class="btn btn-primary">
@@ -767,4 +767,53 @@
     </section>
     <!-- Newsletter end -->
 
-    {% endblock %}
+{% endblock %}
+{% block bottom_scripts %}
+<script>
+    document.querySelector('.polityka-switch-label').addEventListener('click', function() {
+        const input = document.getElementById('polityka_przywatnosci');
+        input.checked = !input.checked;
+        input.value = input.checked ? 1 : 0; // Aktualizacja value checkboxa
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('ajax-contact').addEventListener('submit', function(e) {
+                e.preventDefault(); // Zapobiegaj domyślnej akcji formularza
+                const formData = new FormData(this); // Użyj 'this', aby odnieść się do formularza
+                const jsonFormData = Object.fromEntries(formData.entries());
+
+                fetch('/send-mess-pl', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(jsonFormData) // Przekazuj dane z formularza
+                })
+                .then(response => response.json())
+                .then(data => {
+                // console.log(data);
+
+                const komunikatDiv = document.getElementById("komunikat_z_serwera");
+                if (komunikatDiv) {
+                    komunikatDiv.innerHTML = data.message;
+                    // Ustawienie koloru komunikatu na podstawie wartości 'success'
+                    if(data.success) {
+                            komunikatDiv.style.color = "#063e90"; // Sukces - Niebieski
+                            document.getElementById('ajax-contact').reset();
+                    } else {
+                            komunikatDiv.style.color = "#ff3535"; // Niepowodzenie - czerwony
+                    }
+                    setTimeout(function() {
+                            komunikatDiv.innerHTML = '';
+                    }, 5000);
+                }
+                })
+                .catch((error) => {
+                console.error('Error:', error);
+                });
+        });
+    });
+
+    
+</script>
+{% endblock %}
