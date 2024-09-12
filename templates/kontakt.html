@@ -227,10 +227,10 @@
                                                 <button><i class="fa-solid fa-envelope"></i></button>
                                             </div>
                                         </div>
-                                        <div style="margin-top: 1em; display: block;" id="komunikat_z_serwera_newsletter"></div>
                                     </form>
                                 </div>
                             </div>
+                            <div style="margin-top: 1em; display: block; text-align: right;" id="komunikat_z_serwera_newsletter"></div>
                         </div>
                     </div>
                 </div>
@@ -377,10 +377,10 @@
                     komunikatDiv.innerHTML = data.message;
                     // Ustawienie koloru komunikatu na podstawie wartości 'success'
                     if(data.success) {
-                        komunikatDiv.style.color = "green"; // Sukces - zielony
+                        komunikatDiv.style.color = "#48081b"; // Sukces
                         document.getElementById('newsletter_form').reset();
                     } else {
-                        komunikatDiv.style.color = "red"; // Niepowodzenie - czerwony
+                        komunikatDiv.style.color = "white"; // Niepowodzenie
                     }
                     setTimeout(function() {
                         komunikatDiv.innerHTML = '';
