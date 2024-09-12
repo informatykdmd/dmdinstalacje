@@ -13,8 +13,8 @@
                                 <h2>{{choiced['title']}}</h2>
                                 <ul class="mt-20">
                                     <li class="mb-20"><a href="/">DMD</a></li>
-                                    <li><a href="/"><span>Blog</span></a></li>
-                                    <li><span class="active">{{choiced['title'][:10]}}</span></li>
+                                    <li><a href="/blog"><span>Blog</span></a></li>
+                                    <li><span class="active">{{choiced['author']}}</span></li>
                                 </ul>
                             </div>
                         </div>
@@ -169,17 +169,39 @@
                                 <div class="blog-sidebar-widget-content">
                                     <div class="blog-sidebar-about">
                                         <div class="featured-author text-center">
-                                            <a href="team-details.html"><img src="static/images/blog/comment/01.jpg" alt=""></a>
-                                            <h6 class="featured-author-title mt-30"><a href="team-details.html">Rose Sophia Marlina</a></h6>
-                                            <small class="designation">Digital Marketer</small>
-                                            <p>Lorem ipsum dolor sit amet, consect etur adipisicing elit eiusmod.</p>
-                                            <div class="featured-author-social mt-25">
+                                            <a href="#form-messages">
+                                                <img src="{{choiced['author']}}" alt="">
+                                            </a>
+                                            <h6 class="featured-author-title mt-30">
+                                                <a href="#form-messages">{{choiced['author']}}</a></h6>
+                                            <small class="designation">Autor Posta</small>
+                                            <p>
+                                                {{choiced['author_about']}}
+                                            </p>
+                                            <!-- <div class="featured-author-social mt-25">
                                                 <a href="#"><i class="fa fa-facebook"></i></a>
                                                 <a href="#"><i class="fab fa-twitter"></i></a>
                                                 <a href="#"><i class="fa fa-vimeo-v"></i></a>
                                                 <a href="#"><i class="fab fa-linkedin"></i></a>
-                                            </div>
+                                            </div> -->
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="blog-sidebar-widget mb-55">
+                                <div class="blog-sidebar-widget-head mb-30">
+                                    <h3 class="blog-sidebar-widget-title">Tags</h3>
+                                </div>
+                                <div class="blog-sidebar-widget-content">
+                                    <div class="tagcloud">
+                                        <a href="#">Art</a>
+                                        <a href="#">Course</a>
+                                        <a href="#">Videos</a>
+                                        <a href="#">App</a>
+                                        <a href="#">Education</a>
+                                        <a href="#">Data</a>
+                                        <a href="#">Machine </a>
+                                        <a href="#">Tips</a>
                                     </div>
                                 </div>
                             </div>
@@ -253,23 +275,6 @@
                                         <li><a href="blog.html"><i class="fa-solid fa-angle-right"></i> UX Design  (3)</a></li>
                                         <li><a href="blog.html"><i class="fa-solid fa-angle-right"></i> WordPress  (3)</a></li>
                                     </ul>
-                                </div>
-                            </div>
-                            <div class="blog-sidebar-widget mb-55">
-                                <div class="blog-sidebar-widget-head mb-30">
-                                    <h3 class="blog-sidebar-widget-title">Tags</h3>
-                                </div>
-                                <div class="blog-sidebar-widget-content">
-                                    <div class="tagcloud">
-                                        <a href="#">Art</a>
-                                        <a href="#">Course</a>
-                                        <a href="#">Videos</a>
-                                        <a href="#">App</a>
-                                        <a href="#">Education</a>
-                                        <a href="#">Data</a>
-                                        <a href="#">Machine </a>
-                                        <a href="#">Tips</a>
-                                    </div>
                                 </div>
                             </div>
                         </div>
