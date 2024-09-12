@@ -85,32 +85,38 @@
                         <div class="comments-area mt-50" id="comment-section">
                             {% if choiced['len'] > 0 %}
                                 <h3 class="comments-title">Komentarze ({{choiced['len']}})</h3>
-                                <ul class="comment-list mt-50">
-                                    {% for comm in choiced['comments'].values() %}
-                                        <li class="children mt-50 pl-50 clear">
-                                            <div class="single-comment-wrap">
-                                                <div class="thumb">
-                                                    {% if comm['avatar'] %}
-                                                        <img src="{{comm['avatar']}}" alt="comment images">
-                                                    {% else %}
-                                                        <img src="static/images/author-noface.jpg" alt="comment images">
-                                                    {% endif %}
-                                                </div>
-                                                <div class="content">
-                                                    <h5 class="title">{{comm['user']}}  <span><i class="fa-solid fa-calendar-days"></i>{{comm['data-time']}}</span></h5>
-                                                    <p class="text mb-10">{{comm['message']}}</p>
-                                                    <div class="mt-10">
-                                                        <ul class="horizontal-list">
-                                                            {% for star in range(comm['user_stars']) %}
-                                                            <li><i class="fa fa-star"></i></li>
-                                                            {% endfor %}
-                                                        </ul>
-                                                    </div>
+                                {% for comm in choiced['comments'].values() %}
+                                    <div class="row">
+                                        <div class="thumb col-sm-3">
+                                            {% if comm['avatar'] %}
+                                                <img src="{{comm['avatar']}}" alt="comment images">
+                                            {% else %}
+                                                <img src="static/images/author-noface.jpg" alt="comment images">
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <h5 class="title">{{comm['user']}}  <span><i class="fa-solid fa-calendar-days"></i> {{comm['data-time']}}</span></h5>
                                                 </div>
                                             </div>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <p class="text mb-10">{{comm['message']}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <ul class="horizontal-list">
+                                                        {% for star in range(comm['user_stars']) %}
+                                                            <li><i class="fa fa-star"></i></li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
                             {% endif %}
                             <div class="comment-form-wrap mt-50">
                                 <h3 class="reply-title">Give your Reply</h3>
