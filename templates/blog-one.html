@@ -178,30 +178,32 @@
                                             <p>
                                                 {{choiced['author_about']}}
                                             </p>
-                                            <!-- <div class="featured-author-social mt-25">
-                                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                                <a href="#"><i class="fa fa-vimeo-v"></i></a>
-                                                <a href="#"><i class="fab fa-linkedin"></i></a>
-                                            </div> -->
+                                            {% if choiced['author_facebook'] or choiced['author_twitter'] or choiced['author_instagram']%}
+                                                <div class="featured-author-social mt-25">
+                                                    {% if choiced['author_facebook'] %}
+                                                        <a href="{{choiced['author_facebook']}}"><i class="fa fa-facebook"></i></a>
+                                                    {% endif %}
+                                                    {% if choiced['author_twitter'] %}
+                                                        <a href="{{choiced['author_twitter']}}"><i class="fa fa-twitter"></i></a>
+                                                    {% endif %}
+                                                    {% if choiced['author_instagram'] %}
+                                                        <a href="{{choiced['author_instagram']}}"><i class="fa fa-instagram"></i></a>
+                                                    {% endif %}
+                                                </div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="blog-sidebar-widget mb-55">
                                 <div class="blog-sidebar-widget-head mb-30">
-                                    <h3 class="blog-sidebar-widget-title">Tags</h3>
+                                    <h3 class="blog-sidebar-widget-title">Tagi</h3>
                                 </div>
                                 <div class="blog-sidebar-widget-content">
                                     <div class="tagcloud">
-                                        <a href="#">Art</a>
-                                        <a href="#">Course</a>
-                                        <a href="#">Videos</a>
-                                        <a href="#">App</a>
-                                        <a href="#">Education</a>
-                                        <a href="#">Data</a>
-                                        <a href="#">Machine </a>
-                                        <a href="#">Tips</a>
+                                        {% for tag in choiced['tags'] %}
+                                            <a href="/find-by-tags?tag={{tag[1:]}}">{{tag}}</a>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
