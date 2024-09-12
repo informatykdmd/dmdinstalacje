@@ -32,101 +32,97 @@
                     <div class="col-xl-8 col-lg-8 col-md-12">
                         <!-- Blog content details -->
                         <div class="blog-content style-01 mt-30">
-                            <div class="thumb">
-                                <a href="blog-single.html"><img src="{{choiced['contentFoto']}}" alt="blog image"></a>
-                            </div>
-
+                            <h3 class="title mt-30">
+                                {{choiced['title']}}
+                            </h3>
                             <div class="meta-info mt-20">
                                 <ul class="d-flex">
-                                    <li><a class="cat-1st" href="#!"><i class="fa-solid fa-pen-to-square"></i> Renewable</a></li>
+                                    <li>
+                                        <a class="cat-1st" href="#!">
+                                            <i class="fa-solid fa-pen-to-square"></i> 
+                                            {{choiced['category']}}
+                                        </a>
+                                    </li>
 
-                                    <li><a href="#!"><i class="fa fa-comment"></i> 3 Comments</a></li>
+                                    <li>
+                                        <a href="#!"><i class="fa fa-comment"></i> 
+                                            {{choiced['len']}} Komentarzy
+                                        </a>
+                                    </li>
+                                    <li></li>
+                                        <i class="fa fa-calendar"></i>
+                                        {{choiced['data']}}
+                                    </li>
+                                    
                                 </ul>
                             </div>
-
-                            <h3 class="title mt-30"><a href="blog-single.html">We are re-shaping energy for a better quallity </a></h3>
-                            <p class="text mt-20">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Varius morbi enim nunc faucibus a pellentesque sit amet porttitor aliqua. Adipiscing elit duis tristique
-                                sollicitudin nibh sit amet commodo. Suscipit tellus mauris a diam sed enim ut do ac. </p>
                             <p class="text mt-20">
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.There
-                                are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.
+                                {{choiced['introduction']}}
                             </p>
-                            <div class="blog-d-img mt-30">
-                                <img src="static/images/blog/single-blog-02.jpg" alt="">
+                            <div class="thumb">
+                                <img src="{{choiced['contentFoto']}}" alt="blog image">
                             </div>
-
-                            <h3 class="mt-30">Four major elements that we offer:</h3>
-                            <ul class="blog-d-list pl-30 mt-20">
-                                <li><i class="fa-solid fa-angle-right"></i> 100% responsive medical theme.</li>
-                                <li><i class="fa-solid fa-angle-right"></i> Another challenge for these founders</li>
-                                <li><i class="fa-solid fa-angle-right"></i> 99% client satisfaction.</li>
-                                <li><i class="fa-solid fa-angle-right"></i> 24/7 hours support.</li>
-                                <li><i class="fa-solid fa-angle-right"></i> Quality team always ready to help you.</li>
-                            </ul>
-                            <p class="text mt-20">
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.There
-                                are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.
-                            </p>
-
                             <blockquote class="mt-35">
-                                <p>Buggered chinwag on your bike mate don’t get shirty with me super, Jeffrey bobby Richard cheesed off spend a penny a load of old tosh blag.</p>
+                                <p>
+                                    {{choiced['highlight']}}
+                                </p>
 
-                                <p><span>Kane Willamson</span></p>
+                                <p><span>{{choiced['author']}}</span></p>
                             </blockquote>
-                            <p class="text mt-30">
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.There
-                                are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.
-                            </p>
 
+                            <ul class="blog-d-list pl-30 mt-20">
+                                {% for point in choiced['additionalList'] %}
+                                    <li>
+                                        <i class="fa-solid fa-angle-right"></i> {{point}}
+                                    </li>
+                                {% endfor %}
+                            </ul>
                         </div>
 
                         <!-- Blog comments area -->
                         <div class="comments-area mt-50" id="comment-section">
-                            <h3 class="comments-title">05 comments for this post</h3>
+                            {% if choiced['len'] > 0 %}
+                            <h3 class="comments-title">Komentarze ({{choiced['len']}})</h3>
                             <ul class="comment-list mt-50">
-                                <li>
-                                    <div class="single-comment-wrap d-flex">
-                                        <div class="thumb">
-                                            <img src="static/images/blog/comment/01.jpg" alt="comment images">
-                                        </div>
-                                        <div class="content">
-                                            <h5 class="title">Steve Smith <span><i class="fa-solid fa-calendar-days"></i>June 12, 2021</span></h5>
-                                            <p class="text mb-10">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor labore dolore that magna aliqua. Ut enim ad minim veniam, exercitation.</p>
-                                            <div class="mt-10">
-                                                <a href="#" class="reply">Reply To</a>
+                                {% for comm in choiced['comments'].values() %}
+                                    <li>
+                                        <div class="single-comment-wrap d-flex">
+                                            <div class="thumb">
+                                                {% if comm['avatar'] %}
+                                                    <img src="{{comm['avatar']}}" alt="comment images">
+                                                {% else %}
+                                                    <img src="static/images/author-noface.jpg" alt="comment images">
+                                                {% endif %}
+                                            </div>
+                                            <div class="content">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <h5 class="title">
+                                                            {{comm['user']}} 
+                                                        </h5>
+                                                    </div>
+                                                    <div class="col">
+                                                        <ul class="horizontal-list">
+                                                            {% for star in range(comm['user_stars']) %}
+                                                               <li><i class="fa fa-star"></i></li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <p class="text mb-10">
+                                                    {{comm['message']}}
+                                                </p>
+                                                <div class="mt-10">
+                                                    <span>
+                                                        <i class="fa-solid fa-calendar-days"></i>{{comm['data-time']}}
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </li>
-                                <li class="children mt-50 pl-50 clear">
-                                    <div class="single-comment-wrap d-flex">
-                                        <div class="thumb">
-                                            <img src="static/images/blog/comment/02.jpg" alt="comment images">
-                                        </div>
-                                        <div class="content">
-                                            <h5 class="title">Steve Smith <span><i class="fa-solid fa-calendar-days"></i>June 12, 2021</span></h5>
-                                            <p class="text mb-10">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor labore dolore that magna aliqua. Ut enim ad minim veniam, exercitation.</p>
-                                            <div class="mt-10">
-                                                <a href="#" class="reply">Reply To</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="children mt-50 pl-50 clear">
-                                    <div class="single-comment-wrap d-flex">
-                                        <div class="thumb">
-                                            <img src="static/images/blog/comment/03.jpg" alt="comment images">
-                                        </div>
-                                        <div class="content">
-                                            <h5 class="title">Steve Smith <span><i class="fa-solid fa-calendar-days"></i>June 12, 2021</span></h5>
-                                            <p class="text mb-10">Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor labore dolore that magna aliqua. Ut enim ad minim veniam, exercitation.</p>
-                                            <div class="mt-10">
-                                                <a href="#" class="reply">Reply To</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
+                                    </li>
+                                {% endfor %}
                             </ul>
+                            {% endif %}
                             <div class="comment-form-wrap mt-50">
                                 <h3 class="reply-title">Give your Reply</h3>
                                 <p>Your email address will not be published. Required fields are marked *</p>
@@ -181,13 +177,13 @@
                                             {% if choiced['author_facebook'] or choiced['author_twitter'] or choiced['author_instagram']%}
                                                 <div class="featured-author-social mt-25">
                                                     {% if choiced['author_facebook'] %}
-                                                        <a href="{{choiced['author_facebook']}}"><i class="fa fa-facebook"></i></a>
+                                                        <a href="{{choiced['author_facebook']}}" target="_blank"><i class="fa fa-facebook"></i></a>
                                                     {% endif %}
                                                     {% if choiced['author_twitter'] %}
-                                                        <a href="{{choiced['author_twitter']}}"><i class="fa fa-twitter"></i></a>
+                                                        <a href="{{choiced['author_twitter']}}" target="_blank"><i class="fa fa-twitter"></i></a>
                                                     {% endif %}
                                                     {% if choiced['author_instagram'] %}
-                                                        <a href="{{choiced['author_instagram']}}"><i class="fa fa-instagram"></i></a>
+                                                        <a href="{{choiced['author_instagram']}}" target="_blank"><i class="fa fa-instagram"></i></a>
                                                     {% endif %}
                                                 </div>
                                             {% endif %}
