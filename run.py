@@ -233,6 +233,28 @@ def generator_daneDBList_one_post_id(id_post, lang='pl'):
         daneList.append(theme)
     return daneList
 
+def generator_teamDB(lang='pl'):
+    took_teamD = take_data_table('*', 'workers_team')
+    teamData = []
+    for data in took_teamD:
+        theme = {
+            'ID': int(data[0]),
+            'EMPLOYEE_PHOTO': data[1],
+            'EMPLOYEE_NAME': data[2],
+            'EMPLOYEE_ROLE': data[3] if lang=='pl' else getLangText(data[3]),
+            'EMPLOYEE_DEPARTMENT': data[4],
+            'PHONE':'' if data[5] is None else data[5],
+            'EMAIL': '' if data[6] is None else data[6],
+            'FACEBOOK': '' if data[7] is None else data[7],
+            'LINKEDIN': '' if data[8] is None else data[8],
+            'DATE_TIME': data[9],
+            'STATUS': int(data[10])
+        }
+        # dostosowane dla dmd instalacje
+        if data[4] == 'dmd instalacje':
+            teamData.append(theme)
+    return teamData
+
 def is_valid_phone(phone):
     # Wzorzec dla numeru telefonu: zaczyna się opcjonalnym plusem, po którym następuje 9-15 cyfr
     pattern = re.compile(r'^\+?\d{9,15}$')
@@ -298,6 +320,16 @@ def smart_truncate(content, length=400):
 def index():
     session['page'] = 'index'
     pageTitle = 'Strona Główna'
+
+    if f'TEAM-ALL' not in session:
+        team_list = generator_teamDB()
+        session[f'TEAM-ALL'] = team_list
+    else:
+        team_list = session[f'TEAM-ALL']
+
+    treeListTeam = []
+    for i, member in enumerate(team_list):
+        if  i < 3: treeListTeam.append(member)
        
     # if f'BLOG-SHORT' not in session:
     #     blog_post = generator_daneDBList_short()
@@ -319,7 +351,7 @@ def index():
         f'index.html',
         pageTitle=pageTitle,
         # blog_post_two=blog_post_two,
-        # oferta=oferta
+        treeListTeam=treeListTeam
         )
 
 
