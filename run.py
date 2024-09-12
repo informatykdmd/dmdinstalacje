@@ -391,7 +391,7 @@ def myZespol():
        fullListTeam.append(member)
     
     return render_template(
-        f'myZespol.html',
+        f'my-zespol.html',
         pageTitle=pageTitle,
         fullListTeam=fullListTeam
         )
