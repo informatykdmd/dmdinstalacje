@@ -4362,8 +4362,8 @@ blockquote p span {
 }
 
 .featured-author-social i:hover {
-    border: 1px solid var(--main-color-one);
-    background-color: var(--main-color-one);
+    border: 1px solid var(--main-color-two);
+    background-color: var(--main-color-two);
     color: var(--color-white);
     ;
 }
