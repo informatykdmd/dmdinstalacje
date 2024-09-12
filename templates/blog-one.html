@@ -97,27 +97,14 @@
                                                 {% endif %}
                                             </div>
                                             <div class="content">
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <h5 class="title">
-                                                            {{comm['user']}} 
-                                                        </h5>
-                                                    </div>
-                                                    <div class="col">
-                                                        <ul class="horizontal-list">
-                                                            {% for star in range(comm['user_stars']) %}
-                                                               <li><i class="fa fa-star"></i></li>
-                                                            {% endfor %}
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <p class="text mb-10">
-                                                    {{comm['message']}}
-                                                </p>
+                                                <h5 class="title">{{comm['user']}}  <span><i class="fa-solid fa-calendar-days"></i>{{comm['data-time']}}</span></h5>
+                                                <p class="text mb-10">{{comm['message']}}</p>
                                                 <div class="mt-10">
-                                                    <span>
-                                                        <i class="fa-solid fa-calendar-days"></i>{{comm['data-time']}}
-                                                    </span>
+                                                    <ul class="horizontal-list">
+                                                        {% for star in range(comm['user_stars']) %}
+                                                           <li><a href="#!" class="reply"><i class="fa fa-star"></i></a></li>
+                                                        {% endfor %}
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </div>
