@@ -15,11 +15,11 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = secrets.token_hex(16)
 
 # Ustawienia dla Flask-Session
-app.config['SESSION_TYPE'] = 'filesystem'  # Możesz użyć np. 'redis', 'sqlalchemy'
+app.config['SESSION_TYPE'] = 'filesystem'  # Można użyć np. 'redis', 'sqlalchemy'
 app.config['SESSION_PERMANENT'] = True  # Sesja ma być permanentna
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)  # Czas wygaśnięcia sesji (10 minut)
 
-# Ustawienie ilości elementów na stronę (nie dotyczy sesji, ale pozostawiam jako jest)
+# Ustawienie ilości elementów na stronę (nie dotyczy sesji)
 app.config['PER_PAGE'] = 6
 
 # Inicjalizacja obsługi sesji
@@ -305,26 +305,6 @@ def smart_truncate(content, length=400):
         # Znajdujemy miejsce, gdzie jest koniec pełnego słowa, nie przekraczając maksymalnej długości
         truncated_content = content[:length].rsplit(' ', 1)[0]
         return f"{truncated_content}..."
-
-# def get_latest_blog_posts(lang='pl'):
-#     daneList = []
-#     took_allPost = msq.connect_to_database(f'SELECT * FROM blog_posts ORDER BY ID DESC LIMIT 2;') # take_data_table('*', 'blog_posts')
-#     for post in took_allPost:
-#         id_content = post[1]
-#         theme = {
-#             'id': id_content,
-#             'title': take_data_where_ID('TITLE', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('TITLE', 'contents', 'ID', id_content)[0][0]),
-#             'data': format_date(take_data_where_ID('DATE_TIME', 'contents', 'ID', id_content)[0][0]) if lang=='pl' else format_date(take_data_where_ID('DATE_TIME', 'contents', 'ID', id_content)[0][0], False)
-#         }
-#         daneList.append(theme)
-#     return daneList
-
-# @app.context_processor
-# def inject_footer_data():
-#     # Dodaj dane do kontekstu szablonu, aby były dostępne we wszystkich widokach
-#     return {
-#         'latest_blog_posts': get_latest_blog_posts()
-#     }
 
 
 @app.route('/')
@@ -871,7 +851,7 @@ def subpage():
     pageTitle = 'subpage'
 
     if 'target' in request.args:
-        if request.args['target'] in ['polityka', 'zasady', 'pomoc']:
+        if request.args['target'] in ['polityka', 'zasady', 'pomoc', 'faq']:
             targetPage = request.args['target']
             pageTitle = targetPage
         else: 
