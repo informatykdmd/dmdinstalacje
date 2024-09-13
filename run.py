@@ -360,6 +360,87 @@ def uslugaFotowoltaika():
         pageTitle=pageTitle
         )
 
+@app.route('/usluga-pompy-ciepla')
+def uslugaPompyCiepla():
+    session['page'] = 'Pompy Ciepła'
+    pageTitle = 'Pompy Ciepła'
+
+    return render_template(
+        'usluga-pompy-ciepla.html',
+        pageTitle=pageTitle
+    )
+
+@app.route('/usluga-rekuperacja')
+def uslugaRekuperacja():
+    session['page'] = 'Rekuperacja'
+    pageTitle = 'Rekuperacja'
+
+    return render_template(
+        'usluga-rekuperacja.html',
+        pageTitle=pageTitle
+    )
+
+@app.route('/usluga-wentylacja-klimatyzacja')
+def uslugaWentylacjaKlimatyzacja():
+    session['page'] = 'Wentylacja i Klimatyzacja'
+    pageTitle = 'Wentylacja i Klimatyzacja'
+
+    return render_template(
+        'usluga-wentylacja-klimatyzacja.html',
+        pageTitle=pageTitle
+    )
+
+@app.route('/usluga-ogrzewanie-podlogowe')
+def uslugaOgrzewaniePodlogowe():
+    session['page'] = 'Ogrzewanie Podłogowe'
+    pageTitle = 'Ogrzewanie Podłogowe'
+
+    return render_template(
+        'usluga-ogrzewanie-podlogowe.html',
+        pageTitle=pageTitle
+    )
+
+@app.route('/usluga-instalacje-elektryczne')
+def uslugaInstalacjeElektryczne():
+    session['page'] = 'Instalacje Elektryczne'
+    pageTitle = 'Instalacje Elektryczne'
+
+    return render_template(
+        'usluga-instalacje-elektryczne.html',
+        pageTitle=pageTitle
+    )
+
+@app.route('/usluga-instalacje-gazowe')
+def uslugaInstalacjeGazowe():
+    session['page'] = 'Instalacje Gazowe'
+    pageTitle = 'Instalacje Gazowe'
+
+    return render_template(
+        'usluga-instalacje-gazowe.html',
+        pageTitle=pageTitle
+    )
+
+@app.route('/usluga-instalacje-grzewcze')
+def uslugaInstalacjeGrzewcze():
+    session['page'] = 'Instalacje Grzewcze'
+    pageTitle = 'Instalacje Grzewcze'
+
+    return render_template(
+        'usluga-instalacje-grzewcze.html',
+        pageTitle=pageTitle
+    )
+
+@app.route('/usluga-instalacje-wodno-kanalizacyjne')
+def uslugaInstalacjeWodnoKanalizacyjne():
+    session['page'] = 'Instalacje Wodno-Kanalizacyjne'
+    pageTitle = 'Instalacje Wodno-Kanalizacyjne'
+
+    return render_template(
+        'usluga-instalacje-wodno-kanalizacyjne.html',
+        pageTitle=pageTitle
+    )
+
+
 @app.route('/o-nas')
 def oNas():
     session['page'] = 'O Nas'
