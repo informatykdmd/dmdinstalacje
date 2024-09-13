@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, url_for, jsonify, session, r
 from flask_paginate import Pagination, get_page_args
 import mysqlDB as msq
 import secrets
-from datetime import datetime
+from datetime import datetime, timedelta
 from googletrans import Translator
 import random
 import re
@@ -10,9 +10,19 @@ import os
 from flask_session import Session
 
 app = Flask(__name__)
-app.config['PER_PAGE'] = 6
+
+# Klucz tajny do szyfrowania sesji
 app.config['SECRET_KEY'] = secrets.token_hex(16)
-app.config['SESSION_TYPE'] = 'filesystem'  # Możesz wybrać inny backend, np. 'redis', 'sqlalchemy', itp.
+
+# Ustawienia dla Flask-Session
+app.config['SESSION_TYPE'] = 'filesystem'  # Możesz użyć np. 'redis', 'sqlalchemy'
+app.config['SESSION_PERMANENT'] = True  # Sesja ma być permanentna
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=3)  # Czas wygaśnięcia sesji (30 minut)
+
+# Ustawienie ilości elementów na stronę (nie dotyczy sesji, ale pozostawiam jako jest)
+app.config['PER_PAGE'] = 6
+
+# Inicjalizacja obsługi sesji
 Session(app)
 
 def getLangText(text):
