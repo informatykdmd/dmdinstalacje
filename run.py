@@ -340,6 +340,25 @@ def index():
         treeListTeam=treeListTeam
         )
 
+@app.route('/uslugi')
+def uslugi():
+    session['page'] = 'Usługi'
+    pageTitle = 'Usługi'
+
+    return render_template(
+        f'uslugi.html',
+        pageTitle=pageTitle
+        )
+
+@app.route('/usluga-fotowoltaika')
+def uslugaFotowoltaika():
+    session['page'] = 'Fotowoltaika'
+    pageTitle = 'Fotowoltaika'
+
+    return render_template(
+        f'usluga-fotowoltaika.html',
+        pageTitle=pageTitle
+        )
 
 @app.route('/o-nas')
 def oNas():
