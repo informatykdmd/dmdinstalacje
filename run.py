@@ -17,7 +17,7 @@ app.config['SECRET_KEY'] = secrets.token_hex(16)
 # Ustawienia dla Flask-Session
 app.config['SESSION_TYPE'] = 'filesystem'  # Możesz użyć np. 'redis', 'sqlalchemy'
 app.config['SESSION_PERMANENT'] = True  # Sesja ma być permanentna
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=3)  # Czas wygaśnięcia sesji (30 minut)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=10)  # Czas wygaśnięcia sesji (10 minut)
 
 # Ustawienie ilości elementów na stronę (nie dotyczy sesji, ale pozostawiam jako jest)
 app.config['PER_PAGE'] = 6
