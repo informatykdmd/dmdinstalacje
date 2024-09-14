@@ -78,8 +78,8 @@
                                     </div>
                                     <div class="row mt-10">
                                         <div class="col-1">
-                                            <input class="polityka-switch" type="checkbox" id="polityka_przywatnosci" name="condition">
-                                            <label class="polityka-switch-label" for="polityka_przywatnosci"></label>
+                                            <input class="polityka-switch-kontakt" type="checkbox" id="polityka_przywatnosci" name="condition">
+                                            <label class="polityka-switch-kontakt-label" for="polityka_przywatnosci"></label>
                                         </div>
                                         <div class="col-10">
                                             <label class="form-check-label" style="font-size: 13px; line-height: 1.2; margin-left: 10px;" for="polityka_przywatnosci">
@@ -242,7 +242,7 @@
 {% endblock %}
 {% block bottom_scripts %}
 <script>
-    document.querySelector('.polityka-switch-label').addEventListener('click', function() {
+    document.querySelector('.polityka-switch-kontakt-label').addEventListener('click', function() {
         const input = document.getElementById('polityka_przywatnosci');
         input.checked = !input.checked;
         input.value = input.checked ? 1 : 0; // Aktualizacja value checkboxa
