@@ -827,25 +827,22 @@ def sendMess():
 
     return redirect(url_for('index'))
 
-
 @app.route('/ask-phone', methods=['POST'])
 def askPhone():
-    if request.method == 'POST':
+    try:
         form_data = request.json
-        CLIENT_NAME = 'Użytkownik strony DMD Transport'
-        CLIENT_EMAIL = 'brak@adresu.email'
-        CLIENT_SUBJECT = 'Prośba o kontakt ze strony DMD Transport'
         CLIENT_PHONE = form_data['phone']
-        CLIENT_MESSAGE = f'Proszę o kontakt {CLIENT_PHONE}'
 
-        
         if CLIENT_PHONE == '' or not is_valid_phone(CLIENT_PHONE):
-            return jsonify(
-                {
-                    'success': False, 
-                    'message': f'Musisz podać swój nr telefonu!'
-                })
-        
+            return jsonify({
+                'success': False,
+                'message': 'Musisz podać poprawny numer telefonu!'
+            })
+
+        CLIENT_NAME = 'Użytkownik strony DMD Instalacje'
+        CLIENT_EMAIL = 'brak@adresu.email'
+        CLIENT_SUBJECT = 'Prośba o kontakt ze strony DMD Instalacje'
+        CLIENT_MESSAGE = f'Proszę o kontakt {CLIENT_PHONE}'
 
         zapytanie_sql = '''
                 INSERT INTO contact 
@@ -853,21 +850,26 @@ def askPhone():
                     VALUES (%s, %s, %s, %s, %s);
                 '''
         dane = (CLIENT_NAME, CLIENT_EMAIL, CLIENT_SUBJECT, CLIENT_MESSAGE, 1)
-    
-        if msq.insert_to_database(zapytanie_sql, dane):
-            return jsonify(
-                {
-                    'success': True, 
-                    'message': f'Numer został wysłany!'
-                })
-        else:
-            return jsonify(
-                {
-                    'success': False, 
-                    'message': f'Wystąpił problem z wysłaniem Twojego numeru telefonu, skontaktuj się w inny sposób lub spróbuj później!'
-                })
 
-    return redirect(url_for('index'))
+        if msq.insert_to_database(zapytanie_sql, dane):
+            return jsonify({
+                'success': True,
+                'message': 'Numer został wysłany!'
+            })
+        else:
+            return jsonify({
+                'success': False,
+                'message': 'Wystąpił problem z wysłaniem numeru telefonu!'
+            })
+
+    except Exception as e:
+        # Zaloguj błąd po stronie serwera (opcjonalnie)
+        print(f'Błąd: {e}')
+        return jsonify({
+            'success': False,
+            'message': 'Wewnętrzny błąd serwera. Spróbuj ponownie później.'
+        }), 500
+
 
 @app.route('/add-subs-pl', methods=['POST'])
 def addSubs():
