@@ -8,6 +8,7 @@ import random
 import re
 import os
 from flask_session import Session
+import logging
 
 app = Flask(__name__)
 
@@ -273,6 +274,26 @@ def is_valid_phone(phone):
         return True
     else:
         return False
+
+
+logFileName = '/home/johndoe/app/dmdinstalacje/logs/access.log'  # 🔁 ZMIENIAJ dla każdej aplikacji
+
+# Konfiguracja loggera
+logging.basicConfig(filename=logFileName, level=logging.INFO,
+                    format='%(asctime)s - %(message)s', filemode='a')
+
+# Funkcja do logowania informacji o zapytaniu
+def log_request():
+    ip_address = request.remote_addr
+    date_time = datetime.now()
+    endpoint = request.endpoint or request.path  # fallback jeśli brak endpointu
+    method = request.method
+
+    logging.info(f'IP: {ip_address}, Time: {date_time}, Endpoint: {endpoint}, Method: {method}')
+
+@app.before_request
+def before_request_logging():
+    log_request()
 
 ############################
 ##      ######           ###
