@@ -826,12 +826,33 @@ def sendMess():
                     'message': f'Musisz podać treść wiadomości!'
                 })
 
+        # --- meta z żądania (Flask/FastAPI) ---
+        ref = request.headers.get('Referer')
+        ua  = request.headers.get('User-Agent')
+        # Host: w Flask jest też request.host; w FastAPI/Starlette z ASGI bywa tylko nagłówek
+        host = request.headers.get('Host') or getattr(request, 'host', None)
+
+        # Realne IP z uwzględnieniem proxy/CDN:
+        xff = request.headers.get('X-Forwarded-For', '')
+        ip_from_xff = xff.split(',')[0].strip() if xff else None
+        ip = (request.headers.get('CF-Connecting-IP') or ip_from_xff or request.remote_addr)
+
         zapytanie_sql = '''
-                INSERT INTO contact 
-                    (CLIENT_NAME, CLIENT_EMAIL, SUBJECT, MESSAGE, DONE) 
-                    VALUES (%s, %s, %s, %s, %s);
-                '''
-        dane = (CLIENT_NAME, CLIENT_EMAIL, CLIENT_SUBJECT, CLIENT_MESSAGE, 1)
+            INSERT INTO contact 
+                (CLIENT_NAME, CLIENT_EMAIL, SUBJECT, MESSAGE, DONE, remote_ip, referer, user_agent, source_host) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
+        '''
+        dane = (
+            CLIENT_NAME,
+            CLIENT_EMAIL,
+            CLIENT_SUBJECT,
+            CLIENT_MESSAGE,
+            1,
+            ip,
+            ref,
+            ua,
+            host
+        )
     
         if msq.insert_to_database(zapytanie_sql, dane):
             return jsonify(
@@ -865,12 +886,33 @@ def askPhone():
         CLIENT_SUBJECT = 'Prośba o kontakt ze strony DMD Instalacje'
         CLIENT_MESSAGE = f'Proszę o kontakt {CLIENT_PHONE}'
 
+        # --- meta z żądania (Flask/FastAPI) ---
+        ref = request.headers.get('Referer')
+        ua  = request.headers.get('User-Agent')
+        # Host: w Flask jest też request.host; w FastAPI/Starlette z ASGI bywa tylko nagłówek
+        host = request.headers.get('Host') or getattr(request, 'host', None)
+
+        # Realne IP z uwzględnieniem proxy/CDN:
+        xff = request.headers.get('X-Forwarded-For', '')
+        ip_from_xff = xff.split(',')[0].strip() if xff else None
+        ip = (request.headers.get('CF-Connecting-IP') or ip_from_xff or request.remote_addr)
+
         zapytanie_sql = '''
-                INSERT INTO contact 
-                    (CLIENT_NAME, CLIENT_EMAIL, SUBJECT, MESSAGE, DONE) 
-                    VALUES (%s, %s, %s, %s, %s);
-                '''
-        dane = (CLIENT_NAME, CLIENT_EMAIL, CLIENT_SUBJECT, CLIENT_MESSAGE, 1)
+            INSERT INTO contact 
+                (CLIENT_NAME, CLIENT_EMAIL, SUBJECT, MESSAGE, DONE, remote_ip, referer, user_agent, source_host) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
+        '''
+        dane = (
+            CLIENT_NAME,
+            CLIENT_EMAIL,
+            CLIENT_SUBJECT,
+            CLIENT_MESSAGE,
+            1,
+            ip,
+            ref,
+            ua,
+            host
+        )
 
         if msq.insert_to_database(zapytanie_sql, dane):
             return jsonify({
@@ -909,12 +951,27 @@ def addSubs():
                 allowed = False
 
         if allowed:
+            # --- meta z żądania (Flask/FastAPI) ---
+            ref = request.headers.get('Referer')
+            ua  = request.headers.get('User-Agent')
+            host = request.headers.get('Host') or getattr(request, 'host', None)
+
+            # Realne IP z uwzględnieniem proxy/CDN:
+            xff = request.headers.get('X-Forwarded-For', '')
+            ip_from_xff = xff.split(',')[0].strip() if xff else None
+            ip = (request.headers.get('CF-Connecting-IP') or ip_from_xff or request.remote_addr)
+
+            # (opcjonalnie) bardzo prosty anty-bot: wymagaj swojej domeny w referer + niepusty UA
+            # if (not ua or not ua.strip()) or (ref and 'dmdbudownictwo.pl' not in ref):
+            #     abort(403)
+
             zapytanie_sql = '''
-                    INSERT INTO newsletter 
-                        (CLIENT_NAME, CLIENT_EMAIL, ACTIVE, USER_HASH) 
-                        VALUES (%s, %s, %s, %s);
-                    '''
-            dane = (SUB_NAME, SUB_EMAIL, 0, USER_HASH)
+                INSERT INTO newsletter 
+                    (CLIENT_NAME, CLIENT_EMAIL, ACTIVE, USER_HASH, remote_ip, referer, user_agent, source_host) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+            '''
+            dane = (SUB_NAME, SUB_EMAIL, 0, USER_HASH, ip, ref, ua, host)
+            
             if msq.insert_to_database(zapytanie_sql, dane):
                 return jsonify(
                     {
