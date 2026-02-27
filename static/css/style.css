@@ -5097,10 +5097,10 @@ blockquote p span {
     height: auto;
     display: block;
 }
-
+/* 
 @media (max-width: 991px){
     .orly-inst-row{
-        align-items: flex-start !important; /* usuwa “dziurę” przy różnych wysokościach kolumn */
+        align-items: flex-start !important; 
     }
 
     .orly-inst-img{
@@ -5119,4 +5119,48 @@ blockquote p span {
         margin-right: auto;
         max-width: 720px;
     }
+} */
+
+@media (max-width: 991px){
+  .orly-inst-row{
+    align-items: flex-start !important;
+    text-align: center;
+  }
+
+  .orly-inst-row .section-title-paragraph .text{
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 720px;
+  }
+
+  .orly-inst-row .section-title.style-01 .title{
+    font-size: 34px;
+  }
+
+  .orly-inst-img{
+    max-width: 320px;
+    max-height: 320px;
+  }
+}
+
+/* Orły - DMD Instalacje (fix layout) */
+.orly-inst-row{
+  align-items: center;
+}
+
+.orly-inst-img{
+  max-width: 360px;
+  max-height: 360px;   /* KLUCZ: żeby nie robił “plakatu” */
+  width: 100%;
+  height: auto;
+  object-fit: cover;   /* bez rozciągania */
+  display: block;
+  margin: 0 auto;
+}
+
+/* przytnij gigantyczny tytuł z theme w tej sekcji */
+.orly-inst-row .section-title.style-01 .title{
+  font-size: 44px;     /* dostosuj: 38–52 */
+  line-height: 1.1;
+  margin-bottom: 18px;
 }
