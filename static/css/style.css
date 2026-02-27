@@ -5091,35 +5091,26 @@ blockquote p span {
 }
 
 /* Orły - DMD Instalacje */
-.orly-inst-img{
-    max-width: 360px;
-    width: 100%;
-    height: auto;
-    display: block;
+.orly-inst-row{
+  align-items: center;
 }
-/* 
-@media (max-width: 991px){
-    .orly-inst-row{
-        align-items: flex-start !important; 
-    }
 
-    .orly-inst-img{
-        margin-left: auto;
-        margin-right: auto;
-        max-width: 320px;
-    }
+.orly-inst-img{
+  width: 100%;
+  max-width: 360px;
+  max-height: 360px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  object-fit: cover;
+}
 
-    .orly-inst-row .section-title,
-    .orly-inst-row .section-title-paragraph{
-        text-align: center;
-    }
-
-    .orly-inst-row .section-title-paragraph .text{
-        margin-left: auto;
-        margin-right: auto;
-        max-width: 720px;
-    }
-} */
+/* przytnij tytuł w tej sekcji */
+.orly-inst-row .section-title.style-01 .title{
+  font-size: 44px;
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
 
 @media (max-width: 991px){
   .orly-inst-row{
@@ -5141,26 +5132,4 @@ blockquote p span {
     max-width: 320px;
     max-height: 320px;
   }
-}
-
-/* Orły - DMD Instalacje (fix layout) */
-.orly-inst-row{
-  align-items: center;
-}
-
-.orly-inst-img{
-  max-width: 360px;
-  max-height: 360px;   /* KLUCZ: żeby nie robił “plakatu” */
-  width: 100%;
-  height: auto;
-  object-fit: cover;   /* bez rozciągania */
-  display: block;
-  margin: 0 auto;
-}
-
-/* przytnij gigantyczny tytuł z theme w tej sekcji */
-.orly-inst-row .section-title.style-01 .title{
-  font-size: 44px;     /* dostosuj: 38–52 */
-  line-height: 1.1;
-  margin-bottom: 18px;
 }
