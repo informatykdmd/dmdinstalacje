@@ -11,6 +11,7 @@ from flask_session import Session
 import logging
 
 app = Flask(__name__)
+msq.init_app(app)
 
 # Klucz tajny do szyfrowania sesji
 app.config['SECRET_KEY'] = secrets.token_hex(16)
@@ -98,163 +99,158 @@ def generator_subsDataDB():
         subsData.append(theme)
     return subsData
 
+def _blog_rows(limit=None, post_id=None, detailed=False, offset=0, cards=False, post_ids=None):
+    if isinstance(offset, bool) or not isinstance(offset, int) or offset < 0:
+        raise ValueError('offset must be a non-negative integer')
+    if offset and limit is None:
+        raise ValueError('offset requires a limit')
+    columns = [
+        ('p.ID', 'post_id'), ('c.ID', 'id'), ('c.TITLE', 'title'),
+        ('c.HIGHLIGHTS', 'highlight'), ('c.HEADER_FOTO', 'mainFoto'),
+        ('c.CATEGORY', 'category'), ('c.DATE_TIME', 'data'),
+        ('a.NAME_AUTHOR', 'author'),
+    ]
+    if cards and not detailed:
+        columns += [('c.TAGS', 'tags'), ('c.CONTENT_FOTO', 'contentFoto')]
+    if detailed:
+        columns += [
+            ('c.CONTENT_MAIN', 'introduction'), ('c.CONTENT_FOTO', 'contentFoto'),
+            ('c.BULLETS', 'additionalList'), ('c.TAGS', 'tags'),
+            ('a.ABOUT_AUTHOR', 'author_about'), ('a.AVATAR_AUTHOR', 'author_avatar'),
+            ('a.FACEBOOK', 'author_facebook'), ('a.TWITER_X', 'author_twitter'),
+            ('a.INSTAGRAM', 'author_instagram'),
+        ]
+    query = 'SELECT ' + ', '.join(column for column, _ in columns)
+    query += """
+        FROM blog_posts p
+        LEFT JOIN contents c ON c.ID = p.CONTENT_ID
+        LEFT JOIN authors a ON a.ID = p.AUTHOR_ID
+    """
+    params = []
+    if post_id is not None:
+        query += ' WHERE p.ID = %s'
+        params.append(post_id)
+    if post_ids is not None:
+        if not post_ids:
+            return []
+        query += (' AND ' if post_id is not None else ' WHERE ')
+        query += 'p.ID IN (' + ', '.join(['%s'] * len(post_ids)) + ')'
+        params.extend(post_ids)
+    query += ' ORDER BY p.ID DESC'
+    if limit is not None:
+        if isinstance(limit, bool) or not isinstance(limit, int) or limit < 0:
+            raise ValueError('limit must be a non-negative integer')
+        query += ' LIMIT %s'
+        params.append(limit)
+        if offset:
+            query += ' OFFSET %s'
+            params.append(offset)
+    rows = msq.safe_connect_to_database(query, tuple(params))
+    return [dict(zip((key for _, key in columns), row)) for row in rows]
+
+
+def _blog_theme(row, lang):
+    theme = {key: value for key, value in row.items() if key != 'post_id'}
+    if lang != 'pl':
+        for key in ('title', 'highlight', 'category', 'introduction',
+                    'additionalList', 'tags', 'author_about'):
+            if key in theme:
+                theme[key] = getLangText(theme[key])
+    theme['data'] = format_date(theme['data'], lang == 'pl')
+    if 'additionalList' in theme:
+        bullets = str(theme['additionalList'])
+        if lang != 'pl':
+            bullets = bullets.replace('#SPLX#', '#splx#')
+        theme['additionalList'] = bullets.split('#splx#')
+    if 'tags' in theme:
+        theme['tags'] = str(theme['tags']).split(', ')
+    return theme
+
+
+def _blog_details(lang='pl', post_id=None):
+    rows = _blog_rows(post_id=post_id, detailed=True)
+    if not rows:
+        return []
+    # Fetch comments and their authors once for the whole selected collection.
+    query = """
+        SELECT com.*, n.CLIENT_NAME, n.CLIENT_EMAIL, n.AVATAR_USER, stats.comment_count
+        FROM comments com
+        JOIN blog_posts p ON p.ID = com.BLOG_POST_ID
+        LEFT JOIN newsletter n ON n.ID = com.AUTHOR_OF_COMMENT_ID
+        LEFT JOIN (
+            SELECT AUTHOR_OF_COMMENT_ID, COUNT(*) AS comment_count
+            FROM comments GROUP BY AUTHOR_OF_COMMENT_ID
+        ) stats ON stats.AUTHOR_OF_COMMENT_ID = com.AUTHOR_OF_COMMENT_ID
+    """
+    params = ()
+    if post_id is not None:
+        query += ' WHERE p.ID = %s'
+        params = (post_id,)
+    query += ' ORDER BY com.ID'
+    comments = {}
+    for com in msq.safe_connect_to_database(query, params):
+        post_comments = comments.setdefault(com[1], {})
+        post_comments[len(post_comments)] = {
+            'id': com[0],
+            'message': com[2] if lang == 'pl' else getLangText(com[2]),
+            'user': com[-4], 'e-mail': com[-3], 'avatar': com[-2],
+            'data-time': format_date(com[4], lang == 'pl'),
+        }
+        if post_id is not None:
+            count = com[-1] or 0
+            bonus = 4 if count > 10 else 2 if count > 4 else 1 if count > 1 else 0
+            post_comments[len(post_comments) - 1]['user_stars'] = 1 + bool(com[-2]) + bonus
+    result = []
+    for row in rows:
+        theme = _blog_theme(row, lang)
+        theme['comments'] = comments.get(row['post_id'], {})
+        result.append(theme)
+    return result
+
+
 def generator_daneDBList(lang='pl'):
-    daneList = []
-    took_allPost = msq.connect_to_database(f'SELECT * FROM blog_posts ORDER BY ID DESC;') # take_data_table('*', 'blog_posts')
-    for post in took_allPost:
-        id = post[0]
-        id_content = post[1]
-        id_author = post[2]
+    return _blog_details(lang)
 
-        allPostComments = take_data_where_ID('*', 'comments', 'BLOG_POST_ID', id)
-        comments_dict = {}
-        for i, com in enumerate(allPostComments):
-            comments_dict[i] = {}
-            comments_dict[i]['id'] = com[0]
-            comments_dict[i]['message'] = com[2] if lang=='pl' else getLangText(com[2])
-            comments_dict[i]['user'] = take_data_where_ID('CLIENT_NAME', 'newsletter', 'ID', com[3])[0][0]
-            comments_dict[i]['e-mail'] = take_data_where_ID('CLIENT_EMAIL', 'newsletter', 'ID', com[3])[0][0]
-            comments_dict[i]['avatar'] = take_data_where_ID('AVATAR_USER', 'newsletter', 'ID', com[3])[0][0]
-            comments_dict[i]['data-time'] = format_date(com[4]) if lang=='pl' else format_date(com[4], False)
-            
-        theme = {
-            'id': take_data_where_ID('ID', 'contents', 'ID', id_content)[0][0],
-            'title': take_data_where_ID('TITLE', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('TITLE', 'contents', 'ID', id_content)[0][0]),
-            'introduction': take_data_where_ID('CONTENT_MAIN', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('CONTENT_MAIN', 'contents', 'ID', id_content)[0][0]),
-            'highlight': take_data_where_ID('HIGHLIGHTS', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('HIGHLIGHTS', 'contents', 'ID', id_content)[0][0]),
-            'mainFoto': take_data_where_ID('HEADER_FOTO', 'contents', 'ID', id_content)[0][0],
-            'contentFoto': take_data_where_ID('CONTENT_FOTO', 'contents', 'ID', id_content)[0][0],
-            'additionalList': str(take_data_where_ID('BULLETS', 'contents', 'ID', id_content)[0][0]).split('#splx#') if lang=='pl' else str(getLangText(take_data_where_ID('BULLETS', 'contents', 'ID', id_content)[0][0])).replace('#SPLX#', '#splx#').split('#splx#'),
-            'tags': str(take_data_where_ID('TAGS', 'contents', 'ID', id_content)[0][0]).split(', ') if lang=='pl' else str(getLangText(take_data_where_ID('TAGS', 'contents', 'ID', id_content)[0][0])).split(', '),
-            'category': take_data_where_ID('CATEGORY', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('CATEGORY', 'contents', 'ID', id_content)[0][0]),
-            'data': format_date(take_data_where_ID('DATE_TIME', 'contents', 'ID', id_content)[0][0]) if lang=='pl' else format_date(take_data_where_ID('DATE_TIME', 'contents', 'ID', id_content)[0][0], False),
-            'author': take_data_where_ID('NAME_AUTHOR', 'authors', 'ID', id_author)[0][0],
 
-            'author_about': take_data_where_ID('ABOUT_AUTHOR', 'authors', 'ID', id_author)[0][0] if lang=='pl' else getLangText(take_data_where_ID('ABOUT_AUTHOR', 'authors', 'ID', id_author)[0][0]),
-            'author_avatar': take_data_where_ID('AVATAR_AUTHOR', 'authors', 'ID', id_author)[0][0],
-            'author_facebook': take_data_where_ID('FACEBOOK', 'authors', 'ID', id_author)[0][0],
-            'author_twitter': take_data_where_ID('TWITER_X', 'authors', 'ID', id_author)[0][0],
-            'author_instagram': take_data_where_ID('INSTAGRAM', 'authors', 'ID', id_author)[0][0],
+def generator_daneDBList_short(lang='pl', limit=None, offset=0):
+    # Unlimited by default: the home page explicitly requests only three rows.
+    return [_blog_theme(row, lang) for row in _blog_rows(limit=limit, offset=offset)]
 
-            'comments': comments_dict
-        }
-        daneList.append(theme)
-    return daneList
 
-def generator_daneDBList_short(lang='pl'):
-    daneList = []
-    took_allPost = msq.connect_to_database(f'SELECT * FROM blog_posts ORDER BY ID DESC;') # take_data_table('*', 'blog_posts')
-    for post in took_allPost:
-
-        id_content = post[1]
-        id_author = post[2]
-
-        theme = {
-            'id': take_data_where_ID('ID', 'contents', 'ID', id_content)[0][0],
-            'title': take_data_where_ID('TITLE', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('TITLE', 'contents', 'ID', id_content)[0][0]),
-            
-            'highlight': take_data_where_ID('HIGHLIGHTS', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('HIGHLIGHTS', 'contents', 'ID', id_content)[0][0]),
-            'mainFoto': take_data_where_ID('HEADER_FOTO', 'contents', 'ID', id_content)[0][0],
-            
-            'category': take_data_where_ID('CATEGORY', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('CATEGORY', 'contents', 'ID', id_content)[0][0]),
-            'data': format_date(take_data_where_ID('DATE_TIME', 'contents', 'ID', id_content)[0][0]) if lang=='pl' else format_date(take_data_where_ID('DATE_TIME', 'contents', 'ID', id_content)[0][0], False),
-            'author': take_data_where_ID('NAME_AUTHOR', 'authors', 'ID', id_author)[0][0],
-
-        }
-        daneList.append(theme)
-    return daneList
+def _blog_count():
+    rows = msq.connect_to_database('SELECT COUNT(*) FROM blog_posts')
+    return rows[0][0] if rows else 0
 
 
 def generator_daneDBList_cetegory():
-    # Pobranie kategorii z bazy danych
     took_allPost = msq.connect_to_database('SELECT CATEGORY FROM contents ORDER BY ID DESC;')
-    
-    # Zliczanie wystąpień każdej kategorii
     cat_count = {}
-    for post in took_allPost:
-        category = post[0]
-        if category in cat_count:
-            cat_count[category] += 1
-        else:
-            cat_count[category] = 1
+    for (category,) in took_allPost:
+        cat_count[category] = cat_count.get(category, 0) + 1
+    return [f"{cat} ({count})" for cat, count in cat_count.items()], cat_count
 
-    # Tworzenie listy stringów z nazwami kategorii i ilością wystąpień
-    cat_list = [f"{cat} ({count})" for cat, count in cat_count.items()]
-    cat_dict = cat_count
-    
-    return cat_list, cat_dict
 
-def generator_daneDBList_RecentPosts(main_id, amount = 3):
-    # Pobieranie ID wszystkich postów oprócz main_id
-    query = f"SELECT ID FROM contents WHERE ID != {main_id} ORDER BY ID DESC;"
-    took_allPost = msq.connect_to_database(query)
+def generator_daneDBList_RecentPosts(main_id, amount=3):
+    # Preserve the existing random selection of suggested posts.
+    rows = msq.safe_connect_to_database(
+        'SELECT ID FROM contents WHERE ID != %s ORDER BY ID DESC', (main_id,))
+    ids = [row[0] for row in rows]
+    return random.sample(ids, min(amount, len(ids)))
 
-    # Przekształcanie wyników zapytania na listę ID
-    all_post_ids = [post[0] for post in took_allPost]
-
-    # Losowanie unikalnych ID z listy (zakładając, że chcemy np. 5 losowych postów, lub mniej jeśli jest mniej dostępnych)
-    num_posts_to_select = min(amount, len(all_post_ids))  
-    posts = random.sample(all_post_ids, num_posts_to_select)
-
-    return posts
 
 def generator_daneDBList_one_post_id(id_post, lang='pl'):
-    daneList = []
-    took_allPost = msq.connect_to_database(f'SELECT * FROM blog_posts WHERE ID={id_post};') # take_data_table('*', 'blog_posts')
-    for post in took_allPost:
-        id = post[0]
-        id_content = post[1]
-        id_author = post[2]
+    return _blog_details(lang, post_id=id_post)
 
-        allPostComments = take_data_where_ID('*', 'comments', 'BLOG_POST_ID', id)
-        comments_dict = {}
-        for i, com in enumerate(allPostComments):
-            comments_dict[i] = {}
-            comments_dict[i]['id'] = com[0]
-            comments_dict[i]['message'] = com[2] if lang=='pl' else getLangText(com[2])
-            comments_dict[i]['user'] = take_data_where_ID('CLIENT_NAME', 'newsletter', 'ID', com[3])[0][0]
-            comments_dict[i]['e-mail'] = take_data_where_ID('CLIENT_EMAIL', 'newsletter', 'ID', com[3])[0][0]
-            comments_dict[i]['avatar'] = take_data_where_ID('AVATAR_USER', 'newsletter', 'ID', com[3])[0][0]
-            comments_dict[i]['data-time'] = format_date(com[4]) if lang=='pl' else format_date(com[4], False)
 
-            allCommentsByUser = take_data_where_ID('*', 'comments', 'AUTHOR_OF_COMMENT_ID', com[3])
+def _blog_page(limit, offset, lang='pl'):
+    return [_blog_theme(row, lang) for row in _blog_rows(limit=limit, offset=offset, cards=True)]
 
-            usr_stars_counter = 1
-            if comments_dict[i]['avatar']:
-                usr_stars_counter += 1
 
-            if len(allCommentsByUser) > 10:
-                usr_stars_counter += 4
-            elif len(allCommentsByUser) > 4:
-                usr_stars_counter += 2
-            elif len(allCommentsByUser) > 1:
-                usr_stars_counter += 1
+def _blog_recent_posts(main_id, amount=3, lang='pl'):
+    ids = generator_daneDBList_RecentPosts(main_id, amount)
+    rows = {row['post_id']: row for row in _blog_rows(post_ids=ids, cards=True)}
+    return [_blog_theme(rows[post_id], lang) for post_id in ids if post_id in rows]
 
-            comments_dict[i]['user_stars'] = usr_stars_counter
-            
-        theme = {
-            'id': take_data_where_ID('ID', 'contents', 'ID', id_content)[0][0],
-            'title': take_data_where_ID('TITLE', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('TITLE', 'contents', 'ID', id_content)[0][0]),
-            'introduction': take_data_where_ID('CONTENT_MAIN', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('CONTENT_MAIN', 'contents', 'ID', id_content)[0][0]),
-            'highlight': take_data_where_ID('HIGHLIGHTS', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('HIGHLIGHTS', 'contents', 'ID', id_content)[0][0]),
-            'mainFoto': take_data_where_ID('HEADER_FOTO', 'contents', 'ID', id_content)[0][0],
-            'contentFoto': take_data_where_ID('CONTENT_FOTO', 'contents', 'ID', id_content)[0][0],
-            'additionalList': str(take_data_where_ID('BULLETS', 'contents', 'ID', id_content)[0][0]).split('#splx#') if lang=='pl' else str(getLangText(take_data_where_ID('BULLETS', 'contents', 'ID', id_content)[0][0])).replace('#SPLX#', '#splx#').split('#splx#'),
-            'tags': str(take_data_where_ID('TAGS', 'contents', 'ID', id_content)[0][0]).split(', ') if lang=='pl' else str(getLangText(take_data_where_ID('TAGS', 'contents', 'ID', id_content)[0][0])).split(', '),
-            'category': take_data_where_ID('CATEGORY', 'contents', 'ID', id_content)[0][0] if lang=='pl' else getLangText(take_data_where_ID('CATEGORY', 'contents', 'ID', id_content)[0][0]),
-            'data': format_date(take_data_where_ID('DATE_TIME', 'contents', 'ID', id_content)[0][0]) if lang=='pl' else format_date(take_data_where_ID('DATE_TIME', 'contents', 'ID', id_content)[0][0], False),
-            'author': take_data_where_ID('NAME_AUTHOR', 'authors', 'ID', id_author)[0][0],
-
-            'author_about': take_data_where_ID('ABOUT_AUTHOR', 'authors', 'ID', id_author)[0][0] if lang=='pl' else getLangText(take_data_where_ID('ABOUT_AUTHOR', 'authors', 'ID', id_author)[0][0]),
-            'author_avatar': take_data_where_ID('AVATAR_AUTHOR', 'authors', 'ID', id_author)[0][0],
-            'author_facebook': take_data_where_ID('FACEBOOK', 'authors', 'ID', id_author)[0][0],
-            'author_twitter': take_data_where_ID('TWITER_X', 'authors', 'ID', id_author)[0][0],
-            'author_instagram': take_data_where_ID('INSTAGRAM', 'authors', 'ID', id_author)[0][0],
-
-            'comments': comments_dict
-        }
-        daneList.append(theme)
-    return daneList
 
 def generator_teamDB(lang='pl'):
     took_teamD = take_data_table('*', 'workers_team')
@@ -356,7 +352,7 @@ def index():
         if  i < 3: treeListTeam.append(member)
        
     if f'BLOG-SHORT' not in session:
-        blog_post = generator_daneDBList_short()
+        blog_post = generator_daneDBList_short(limit=3)
         session[f'BLOG-SHORT'] = blog_post
     else:
         blog_post = session[f'BLOG-SHORT']
@@ -524,37 +520,19 @@ def blogs():
     session['page'] = 'blogs'
     pageTitle = 'Blog'
 
-    if not 'blog_post' in session:
-        blog_post = generator_daneDBList()
-        session['blog_post'] = blog_post
-    else:
-        blog_post = session['blog_post']
-
-    # Ustawienia paginacji
+    # Discard the old full-blog session cache; fetch only this page from SQL.
+    session.pop('blog_post', None)
     page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
-    total = len(blog_post)
+    page = max(1, page)
+    per_page = max(1, per_page)
+    offset = (page - 1) * per_page
+    total = _blog_count()
     pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
-
-    # Pobierz tylko odpowiednią ilość postów na aktualnej stronie
-    posts = blog_post[offset: offset + per_page]
+    posts = _blog_page(per_page, offset)
 
     cats = generator_daneDBList_cetegory()
     cat_dict = cats[1]
-    take_id_rec_pos = generator_daneDBList_RecentPosts(0)
-    recentPosts = []
-    for idp in take_id_rec_pos:
-        t_post = generator_daneDBList_one_post_id(idp)[0]
-        theme = {
-            'id': t_post['id'],
-            'title': t_post['title'],
-            'mainFoto': t_post['mainFoto'],
-            'contentFoto': t_post['contentFoto'],
-            'highlight': t_post['highlight'],
-            'category': t_post['category'],
-            'author': t_post['author'],
-            'data': t_post['data']
-        }
-        recentPosts.append(theme)
+    recentPosts = _blog_recent_posts(0)
     
     # print(posts)
     tag_set = set()
@@ -591,20 +569,7 @@ def blogOne():
 
     cats = generator_daneDBList_cetegory()
     cat_dict = cats[1]
-    take_id_rec_pos = generator_daneDBList_RecentPosts(post_id_int)
-    recentPosts = []
-    for idp in take_id_rec_pos:
-        t_post = generator_daneDBList_one_post_id(idp)[0]
-        theme = {
-            'id': t_post['id'],
-            'title': t_post['title'],
-            'mainFoto': t_post['mainFoto'],
-            'contentFoto': t_post['contentFoto'],
-            'category': t_post['category'],
-            'author': t_post['author'],
-            'data': t_post['data']
-        }
-        recentPosts.append(theme)
+    recentPosts = _blog_recent_posts(post_id_int)
 
     return render_template(
         f'blog-one.html',
